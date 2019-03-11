@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 namespace Vectorial {
 template <typename T> class Abin {
 public:
@@ -12,22 +13,22 @@ public:
   explicit Abin(int max);
   Abin(const Abin<T> &a);
   Abin<T> &operator=(const Abin<T> &a);
-  void insertarRaiz(const T &e);
-  void insertarHijoIzquierdo(Nodo n, const T &e);
-  void insertarHijoDerecho(Nodo n, const T &e);
-  void eliminarRaiz();
-  void eliminarHijoIzquierdo(Nodo n);
-  void eliminarHijoDerecho(Nodo n);
-  bool vacio() const { return size == 0; }
+  void insertarRaizB(const T &e);
+  void insertarHijoIzqdoB(Nodo n, const T &e);
+  void insertarHijoDrchoB(Nodo n, const T &e);
+  void eliminarRaizB();
+  void eliminarHijoIzqdoB(Nodo n);
+  void eliminarHijoDrchoB(Nodo n);
+  bool arbolVacioB() const { return size == 0; }
   const T &elemento(Nodo n) const;
   T &elemento(Nodo n);
-  Nodo _raiz() { return (size > 0) ? 0 : NODO_NULO; }
-  Nodo padre(Nodo n) const;
-  Nodo hijoIzquierdo(Nodo n) const;
-  Nodo hijoDerecho(Nodo n) const;
+  int altura(Nodo n) const;
+  int profundidad(Nodo n) const;
+  Nodo raizB() const { return (size > 0) ? 0 : NODO_NULO; }
+  Nodo padreB(Nodo n) const;
+  Nodo hijoIzqdoB(Nodo n) const;
+  Nodo hijoDrchoB(Nodo n) const;
   ~Abin() { delete[] nodos; }
-  template <typename U>
-  friend std::ostream &operator<<(std::ostream &os, const Abin<U> &a);
 
 private:
   int max_size;
@@ -41,8 +42,6 @@ private:
     Nodo padre, h_izq, h_dch;
   };
   Celda *nodos;
-  int printAbin(Nodo n, bool isLeft, int offset, int depth,
-                char[20][255]) const;
 };
 
 template <typename T>
@@ -54,12 +53,12 @@ inline Abin<T>::Abin(const Abin<T> &a)
   std::copy(a.nodos, a.nodos + a.size, nodos);
 }
 
-template <typename T> void Abin<T>::insertarRaiz(const T &e) {
+template <typename T> void Abin<T>::insertarRaizB(const T &e) {
   assert(size == 0);
   nodos[size++] = Celda(e);
 }
 
-template <typename T> void Abin<T>::insertarHijoIzquierdo(Nodo n, const T &e) {
+template <typename T> void Abin<T>::insertarHijoIzqdoB(Nodo n, const T &e) {
   assert(n >= 0 && n < size);
   assert(nodos[n].h_izq == NODO_NULO);
   assert(size < max_size);
@@ -67,7 +66,7 @@ template <typename T> void Abin<T>::insertarHijoIzquierdo(Nodo n, const T &e) {
   nodos[size++] = Celda(e, n);
 }
 
-template <typename T> void Abin<T>::insertarHijoDerecho(Nodo n, const T &e) {
+template <typename T> void Abin<T>::insertarHijoDrchoB(Nodo n, const T &e) {
   assert(n >= 0 && n < size);
   assert(nodos[n].h_dch == NODO_NULO);
   assert(size < max_size);
@@ -75,12 +74,12 @@ template <typename T> void Abin<T>::insertarHijoDerecho(Nodo n, const T &e) {
   nodos[size++] = Celda(e, n);
 }
 
-template <typename T> inline void Abin<T>::eliminarRaiz() {
+template <typename T> inline void Abin<T>::eliminarRaizB() {
   assert(size == 1);
   size = 0;
 }
 
-template <typename T> void Abin<T>::eliminarHijoIzquierdo(Nodo n) {
+template <typename T> void Abin<T>::eliminarHijoIzqdoB(Nodo n) {
   auto h_izq = nodos[n].h_izq;
   assert(n >= 0 && n < size);
   assert(h_izq != NODO_NULO);
@@ -100,17 +99,17 @@ template <typename T> void Abin<T>::eliminarHijoIzquierdo(Nodo n) {
   --size;
 }
 
-template <typename T> void Abin<T>::eliminarHijoDerecho(Nodo n) {
+template <typename T> void Abin<T>::eliminarHijoDrchoB(Nodo n) {
   auto h_dch = nodos[n].h_dch;
   assert(n >= 0 && n < size);
   assert(h_dch != NODO_NULO);
   assert(nodos[h_dch].h_dch == NODO_NULO && nodos[h_dch].h_izq == NODO_NULO);
   if (h_dch != size - 1) {
     nodos[h_dch] = nodos[size - 1];
-    if (nodos[nodos[h_dch].padre].h_dch == size - 1)
-      nodos[nodos[h_dch].padre].h_dch = h_dch;
-    else
+    if (nodos[nodos[h_dch].padre].h_izq == size - 1)
       nodos[nodos[h_dch].padre].h_izq = h_dch;
+    else
+      nodos[nodos[h_dch].padre].h_dch = h_dch;
     if (nodos[h_dch].h_izq != NODO_NULO)
       nodos[nodos[h_dch].h_izq].padre = h_dch;
     if (nodos[h_dch].h_dch != NODO_NULO)
@@ -118,6 +117,22 @@ template <typename T> void Abin<T>::eliminarHijoDerecho(Nodo n) {
   }
   nodos[h_dch] = NODO_NULO;
   --size;
+}
+
+template <typename T> int Abin<T>::altura(Nodo n) const {
+  assert((n >= 0 && n < size) || n == NODO_NULO);
+  if (n == NODO_NULO) {
+    return -1;
+  }
+  return 1 + std::max(altura(nodos[n].h_izq), altura(nodos[n].h_dch));
+}
+
+template <typename T> int Abin<T>::profundidad(Nodo n) const {
+  assert((n >= 0 && n < size) || n == NODO_NULO);
+  if (nodos[n].padre == NODO_NULO) {
+    return 0;
+  }
+  return 1 + profundidad(nodos[n].padre);
 }
 
 template <typename T> inline const T &Abin<T>::elemento(Nodo n) const {
@@ -131,19 +146,19 @@ template <typename T> inline T &Abin<T>::elemento(Nodo n) {
 }
 
 template <typename T>
-inline typename Abin<T>::Nodo Abin<T>::padre(Nodo n) const {
+inline typename Abin<T>::Nodo Abin<T>::padreB(Nodo n) const {
   assert(n >= 0 && n < size);
   return nodos[n].padre;
 }
 
 template <typename T>
-inline typename Abin<T>::Nodo Abin<T>::hijoIzquierdo(Nodo n) const {
+inline typename Abin<T>::Nodo Abin<T>::hijoIzqdoB(Nodo n) const {
   assert(n >= 0 && n < size);
   return nodos[n].h_izq;
 }
 
 template <typename T>
-inline typename Abin<T>::Nodo Abin<T>::hijoDerecho(Nodo n) const {
+inline typename Abin<T>::Nodo Abin<T>::hijoDrchoB(Nodo n) const {
   assert(n >= 0 && n < size);
   return nodos[n].h_dch;
 }
@@ -160,54 +175,8 @@ template <typename T> Abin<T> &Abin<T>::operator=(const Abin<T> &a) {
   }
   return *this;
 }
-
-template <typename T>
-int Abin<T>::printAbin(Nodo n, bool isLeft, int offset, int depth,
-                       char s[20][255]) const {
-  char b[20];
-  int width{5};
-  if (n == NODO_NULO) {
-    return 0;
-  }
-  sprintf(b, "(%03d)", nodos[n].elemento);
-  int left = printAbin(nodos[n].h_izq, true, offset, depth + 1, s);
-  int right =
-      printAbin(nodos[n].h_dch, false, offset + left + width, depth + 1, s);
-  for (int i = 0; i < width; i++) {
-    s[2 * depth][offset + left + i] = b[i];
-  }
-  if (depth && isLeft) {
-    for (int i = 0; i < width + right; i++) {
-      s[2 * depth - 1][offset + left + width / 2 + i] = '-';
-    }
-
-    s[2 * depth - 1][offset + left + width / 2] = '+';
-    s[2 * depth - 1][offset + left + width + right + width / 2] = '+';
-
-  } else if (depth && !isLeft) {
-
-    for (int i = 0; i < left + width; i++) {
-      s[2 * depth - 1][offset - width / 2 + i] = '-';
-    }
-    s[2 * depth - 1][offset + left + width / 2] = '+';
-    s[2 * depth - 1][offset - width / 2 - 1] = '+';
-  }
-  return left + width + right;
-}
-
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Abin<T> &a) {
-  char s[20][255];
-  for (int i = 0; i < 20; i++) {
-    sprintf(s[i], "%80s", " ");
-  }
-  a.printAbin(0, 0, 0, 0, s);
-  for (int i = 0; i < 20; i++) {
-    os << s[i] << std::endl;
-  }
-  return os;
-}
 } // namespace Vectorial
+
 namespace Enlazada {
 template <typename T> class Abin {
   struct Celda;
@@ -220,23 +189,22 @@ public:
   Abin(const Abin<T> &a);
   Abin<T> &operator=(const Abin<T> &a);
 
-  void insertarRaiz(const T &e);
-  void insertarHijoIzquierdo(Nodo n, const T &e);
-  void insertarHijoDerecho(Nodo n, const T &e);
-  void eliminarRaiz();
-  void eliminarHijoIzquierdo(Nodo n);
-  void eliminarHijoDerecho(Nodo n);
-  bool vacio() const { return _raiz == nullptr; }
+  void insertarRaizB(const T &e);
+  void insertarHijoIzqdoB(Nodo n, const T &e);
+  void insertarHijoDrchoB(Nodo n, const T &e);
+  void eliminarRaizB();
+  void eliminarHijoIzqdoB(Nodo n);
+  void eliminarHijoDrchoB(Nodo n);
+  bool arbolVacioB() const { return _raiz == nullptr; }
   const T &elemento(Nodo n) const;
   T &elemento(Nodo n);
-  Nodo raiz() { return _raiz; }
-  Nodo padre(Nodo n) const;
-  Nodo hijoIzquierdo(Nodo n) const;
-  Nodo hijoDerecho(Nodo n) const;
+  int altura(Nodo n) const;
+  int profundidad(Nodo n) const;
+  Nodo raizB() const { return _raiz; }
+  Nodo padreB(Nodo n) const;
+  Nodo hijoIzqdoB(Nodo n) const;
+  Nodo hijoDrchoB(Nodo n) const;
   ~Abin() { destruirNodos(_raiz); }
-
-  template <typename U>
-  friend std::ostream &operator<<(std::ostream &os, const Abin<U> &a);
 
 private:
   struct Celda {
@@ -247,8 +215,6 @@ private:
   };
   void destruirNodos(Nodo &n);
   Nodo copiar(Nodo n);
-  int printAbin(Nodo n, bool isLeft, int offset, int depth,
-                char[20][255]) const;
   Nodo _raiz;
 };
 
@@ -277,39 +243,6 @@ template <typename T> typename Abin<T>::Nodo Abin<T>::copiar(Nodo n) {
   return m;
 }
 
-template <typename T>
-int Abin<T>::printAbin(Nodo n, bool isLeft, int offset, int depth,
-                       char s[20][255]) const {
-  char b[20];
-  int width{5};
-  if (n == NODO_NULO) {
-    return 0;
-  }
-  sprintf(b, "(%03d)", n->elemento);
-  int left = printAbin(n->h_izq, true, offset, depth + 1, s);
-  int right = printAbin(n->h_dch, false, offset + left + width, depth + 1, s);
-  for (int i = 0; i < width; i++) {
-    s[2 * depth][offset + left + i] = b[i];
-  }
-  if (depth && isLeft) {
-    for (int i = 0; i < width + right; i++) {
-      s[2 * depth - 1][offset + left + width / 2 + i] = '-';
-    }
-
-    s[2 * depth - 1][offset + left + width / 2] = '+';
-    s[2 * depth - 1][offset + left + width + right + width / 2] = '+';
-
-  } else if (depth && !isLeft) {
-
-    for (int i = 0; i < left + width; i++) {
-      s[2 * depth - 1][offset - width / 2 + i] = '-';
-    }
-    s[2 * depth - 1][offset + left + width / 2] = '+';
-    s[2 * depth - 1][offset - width / 2 - 1] = '+';
-  }
-  return left + width + right;
-}
-
 template <typename T> inline Abin<T>::Abin() : _raiz(NODO_NULO) {}
 
 template <typename T>
@@ -323,31 +256,31 @@ template <typename T> Abin<T> &Abin<T>::operator=(const Abin<T> &a) {
   return *this;
 }
 
-template <typename T> void Abin<T>::insertarRaiz(const T &e) {
+template <typename T> void Abin<T>::insertarRaizB(const T &e) {
   assert(_raiz == NODO_NULO);
   _raiz = new Celda(e);
 }
 
-template <typename T> void Abin<T>::insertarHijoIzquierdo(Nodo n, const T &e) {
+template <typename T> void Abin<T>::insertarHijoIzqdoB(Nodo n, const T &e) {
   assert(n != NODO_NULO);
   assert(n->h_izq == NODO_NULO);
   n->h_izq = new Celda(e, n);
 }
 
-template <typename T> void Abin<T>::insertarHijoDerecho(Nodo n, const T &e) {
+template <typename T> void Abin<T>::insertarHijoDrchoB(Nodo n, const T &e) {
   assert(n != NODO_NULO);
   assert(n->h_dch == NODO_NULO);
   n->h_dch = new Celda(e, n);
 }
 
-template <typename T> inline void Abin<T>::eliminarRaiz() {
+template <typename T> inline void Abin<T>::eliminarRaizB() {
   assert(_raiz != NODO_NULO);
   assert(_raiz->h_izq == NODO_NULO && _raiz->h_dch == NODO_NULO);
   delete _raiz;
   _raiz = NODO_NULO;
 }
 
-template <typename T> void Abin<T>::eliminarHijoIzquierdo(Nodo n) {
+template <typename T> void Abin<T>::eliminarHijoIzqdoB(Nodo n) {
   assert(n != NODO_NULO);
   assert(n->h_izq != NODO_NULO);
   assert(n->h_izq->h_izq == NODO_NULO && n->h_izq->h_dch == NODO_NULO);
@@ -355,12 +288,26 @@ template <typename T> void Abin<T>::eliminarHijoIzquierdo(Nodo n) {
   n->h_izq = NODO_NULO;
 }
 
-template <typename T> void Abin<T>::eliminarHijoDerecho(Nodo n) {
+template <typename T> void Abin<T>::eliminarHijoDrchoB(Nodo n) {
   assert(n != NODO_NULO);
   assert(n->h_dch != NODO_NULO);
   assert(n->h_dch->h_izq == NODO_NULO && n->h_dch->h_dch == NODO_NULO);
   delete (n->h_dch);
   n->h_dch = NODO_NULO;
+}
+
+template <typename T> int Abin<T>::altura(Nodo n) const {
+  if (n == NODO_NULO) {
+    return -1;
+  }
+  return 1 + std::max(altura(n->h_izq), altura(n->h_dch));
+}
+
+template <typename T> int Abin<T>::profundidad(Nodo n) const {
+  if (n->padre == NODO_NULO) {
+    return 0;
+  }
+  return 1 + profundidad(n->padre);
 }
 
 template <typename T> inline const T &Abin<T>::elemento(Nodo n) const {
@@ -374,34 +321,21 @@ template <typename T> inline T &Abin<T>::elemento(Nodo n) {
 }
 
 template <typename T>
-inline typename Abin<T>::Nodo Abin<T>::padre(Nodo n) const {
+inline typename Abin<T>::Nodo Abin<T>::padreB(Nodo n) const {
   assert(n != NODO_NULO);
   return n->padre;
 }
 
 template <typename T>
-inline typename Abin<T>::Nodo Abin<T>::hijoIzquierdo(Nodo n) const {
+inline typename Abin<T>::Nodo Abin<T>::hijoIzqdoB(Nodo n) const {
   assert(n != NODO_NULO);
   return n->h_izq;
 }
 
 template <typename T>
-inline typename Abin<T>::Nodo Abin<T>::hijoDerecho(Nodo n) const {
+inline typename Abin<T>::Nodo Abin<T>::hijoDrchoB(Nodo n) const {
   assert(n != NODO_NULO);
   return n->h_dch;
-}
-
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Abin<T> &a) {
-  char s[20][255];
-  for (int i = 0; i < 20; i++) {
-    sprintf(s[i], "%80s", " ");
-  }
-  a.printAbin(a._raiz, 0, 0, 0, s);
-  for (int i = 0; i < 20; i++) {
-    os << s[i] << std::endl;
-  }
-  return os;
 }
 
 } // namespace Enlazada

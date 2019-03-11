@@ -120,6 +120,9 @@ set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_
 configure_file (
   "${PROJECT_SOURCE_DIR}/include/configversion.h.in"
   "${PROJECT_BINARY_DIR}/configversion.h")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/abin.txt"
+  "${PROJECT_BINARY_DIR}/abin.txt")
 # add the binary tree to the search path for include files
 # so that we will find exampleConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
