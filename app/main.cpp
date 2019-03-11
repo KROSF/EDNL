@@ -10,7 +10,7 @@ auto out = [](Abin<char> &a, const Abin<char>::Nodo &n) {
 };
 int main() {
   Abin<char> A;
-  std::ifstream is("build/abin.txt",
+  std::ifstream is("abin.txt",
                    std::ifstream::binary);
   is >> A;
   inOrder<char>(A, out);

@@ -8,7 +8,7 @@ using namespace Enlazada;
 class Abin_1 : public ::testing::Test {
 protected:
   void SetUp() override {
-    std::ifstream is("build/abin.txt",
+    std::ifstream is("abin.txt",
                      std::ifstream::binary);
     is >> A_;
     is.close();
