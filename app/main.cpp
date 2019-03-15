@@ -1,22 +1,23 @@
-#include "abin_p1.hpp"
+#include "abin_p2.hpp"
 #include "ioabin.hpp"
 #include <fstream>
 #include <iostream>
 
 using namespace Enlazada;
 
-auto out = [](Abin<char> &a, const Abin<char>::Nodo &n) {
-  std::cout << a.elemento(n);
-};
+// auto out = [](Abin<char> &a, const Abin<char>::Nodo &n) {
+//   if (n != Abin<char>::NODO_NULO)
+//     std::cout << a.elemento(n);
+// };
+
 int main() {
-  Abin<char> A;
-  std::ifstream is("abin.txt",
-                   std::ifstream::binary);
+  Abin<char> A, B;
+  std::ifstream is("abin.txt", std::ifstream::binary);
   is >> A;
-  inOrder<char>(A, out);
-  std::cout << std::endl;
-  postOrder<char>(A, out);
-  std::cout << std::endl;
-  preOrder<char>(A, out);
-  std::cout << std::endl << A << std::endl;
+  // B = A;
+  // B.insertarHijoDrchoB(B.hijoDrchoB(B.hijoDrchoB(B.hijoDrchoB(B.raizB()))),
+  //                      'm');
+  B = reflejo(A);
+  std::cout << A << std::endl;
+  std::cout << B << std::endl;
 }

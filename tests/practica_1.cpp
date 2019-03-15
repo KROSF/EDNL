@@ -8,8 +8,7 @@ using namespace Enlazada;
 class Abin_1 : public ::testing::Test {
 protected:
   void SetUp() override {
-    std::ifstream is("abin.txt",
-                     std::ifstream::binary);
+    std::ifstream is("abin.txt", std::ifstream::binary);
     is >> A_;
     is.close();
   }
@@ -29,3 +28,7 @@ TEST_F(Abin_1, profundidad_abin_nodo) {
       A_.hijoIzqdoB(A_.hijoDrchoB(A_.hijoDrchoB(A_.hijoDrchoB(A_.raizB()))));
   EXPECT_EQ(4, profundidad(A_, nodo));
 }
+
+TEST_F(Abin_1, desequilibrio_abin_raiz) { EXPECT_EQ(2, desequilibrio(A_)); }
+
+TEST_F(Abin_1, isFullTree_abin) { EXPECT_FALSE(isFullTree(A_)); }

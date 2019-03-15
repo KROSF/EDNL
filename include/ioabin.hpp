@@ -10,9 +10,6 @@
 namespace Vectorial {
 template <typename T> using Nodo = typename Abin<T>::Nodo;
 template <typename T>
-using Callback = std::function<void(Abin<T> &, const Nodo<T> &)>;
-
-template <typename T>
 void printAbin(std::ostream &os, const Abin<T> &a, const Nodo<T> &n,
                Trunk *prev, bool isLeft) {
   if (n == Abin<T>::NODO_NULO) {
@@ -66,52 +63,10 @@ std::ostream &operator<<(std::ostream &os, const Abin<T> &a) {
   printAbin(os, a, a.raizB(), nullptr, false);
   return os;
 }
-
-template <typename T>
-void preOrder_r(Abin<T> &a, const Nodo<T> n, Callback<T> procesar) {
-  if (n != Abin<T>::NODO_NULO) {
-    procesar(a, n);
-    preOrder_r(a, a.hijoIzqdoB(n), procesar);
-    preOrder_r(a, a.hijoDrchoB(n), procesar);
-  }
-}
-
-template <typename T> void preOrder(Abin<T> &a, Callback<T> procesar) {
-  preOrder_r(a, a.raizB(), procesar);
-}
-
-template <typename T>
-void inOrder_r(Abin<T> &a, const Nodo<T> &n, Callback<T> procesar) {
-  if (n != Abin<T>::NODO_NULO) {
-    inOrder_r(a, a.hijoIzqdoB(n), procesar);
-    procesar(a, n);
-    inOrder_r(a, a.hijoDrchoB(n), procesar);
-  }
-}
-
-template <typename T> void inOrder(Abin<T> &a, Callback<T> procesar) {
-  inOrder_r(a, a.raizB(), procesar);
-}
-
-template <typename T>
-void postOrder_r(Abin<T> &a, const Nodo<T> &n, Callback<T> procesar) {
-  if (n != Abin<T>::NODO_NULO) {
-    postOrder_r(a, a.hijoIzqdoB(n), procesar);
-    postOrder_r(a, a.hijoDrchoB(n), procesar);
-    procesar(a, n);
-  }
-}
-
-template <typename T> void postOrder(Abin<T> &a, Callback<T> procesar) {
-  postOrder_r(a, a.raizB(), procesar);
-}
-
 } // namespace Vectorial
 
 namespace Enlazada {
 template <typename T> using Nodo = typename Abin<T>::Nodo;
-template <typename T>
-using Callback = std::function<void(Abin<T> &, const Nodo<T> &)>;
 
 template <typename T>
 void printAbin(std::ostream &os, const Abin<T> &a, const Nodo<T> &n,
@@ -123,12 +78,12 @@ void printAbin(std::ostream &os, const Abin<T> &a, const Nodo<T> &n,
   Trunk *trunk = new Trunk(prev, prev_str);
   printAbin(os, a, a.hijoDrchoB(n), trunk, true);
   if (!prev) {
-    trunk->_str = "--- ";
+    trunk->_str = "    ";
   } else if (isLeft) {
-    trunk->_str = ".--- ";
-    prev_str = "    |";
+    trunk->_str = "┌── ";
+    prev_str = "    │";
   } else {
-    trunk->_str = "`--- ";
+    trunk->_str = "└── ";
     prev->_str = prev_str;
   }
   showTrunks(os, trunk);
@@ -136,7 +91,7 @@ void printAbin(std::ostream &os, const Abin<T> &a, const Nodo<T> &n,
   if (prev) {
     prev->_str = prev_str;
   }
-  trunk->_str = "    |";
+  trunk->_str = "    │";
   printAbin(os, a, a.hijoIzqdoB(n), trunk, false);
 }
 
@@ -167,45 +122,5 @@ std::ostream &operator<<(std::ostream &os, const Abin<T> &a) {
   printAbin(os, a, a.raizB(), nullptr, false);
   return os;
 }
-
-template <typename T>
-void preOrder_r(Abin<T> &a, const Nodo<T> n, Callback<T> procesar) {
-  if (n != Abin<T>::NODO_NULO) {
-    procesar(a, n);
-    preOrder_r(a, a.hijoIzqdoB(n), procesar);
-    preOrder_r(a, a.hijoDrchoB(n), procesar);
-  }
-}
-
-template <typename T> void preOrder(Abin<T> &a, Callback<T> procesar) {
-  preOrder_r(a, a.raizB(), procesar);
-}
-
-template <typename T>
-void inOrder_r(Abin<T> &a, const Nodo<T> &n, Callback<T> procesar) {
-  if (n != Abin<T>::NODO_NULO) {
-    inOrder_r(a, a.hijoIzqdoB(n), procesar);
-    procesar(a, n);
-    inOrder_r(a, a.hijoDrchoB(n), procesar);
-  }
-}
-
-template <typename T> void inOrder(Abin<T> &a, Callback<T> procesar) {
-  inOrder_r(a, a.raizB(), procesar);
-}
-
-template <typename T>
-void postOrder_r(Abin<T> &a, const Nodo<T> &n, Callback<T> procesar) {
-  if (n != Abin<T>::NODO_NULO) {
-    postOrder_r(a, a.hijoIzqdoB(n), procesar);
-    postOrder_r(a, a.hijoDrchoB(n), procesar);
-    procesar(a, n);
-  }
-}
-
-template <typename T> void postOrder(Abin<T> &a, Callback<T> procesar) {
-  postOrder_r(a, a.raizB(), procesar);
-}
-
 } // namespace Enlazada
 #endif

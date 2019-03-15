@@ -230,7 +230,7 @@ template <typename T> void Abin<T>::destruirNodos(Nodo &n) {
 template <typename T> typename Abin<T>::Nodo Abin<T>::copiar(Nodo n) {
   Nodo m = NODO_NULO;
   if (n != NODO_NULO) {
-    m = new Celda(n->elto);
+    m = new Celda(n->elemento);
     m->h_izq = copiar(n->h_izq);
     if (m->h_izq != NODO_NULO) {
       m->h_izq->padre = m;
