@@ -1,6 +1,6 @@
 #include "op.hpp"
 
-Op::Op(double opd = 0, char opr = '_') : operando{opd}, operador{opr} {}
+Op::Op(double opd, char opr) : operando{opd}, operador{opr} {}
 
 std::ostream &operator<<(std::ostream &os, const Op &op) {
   if (op.operando != '_') {
