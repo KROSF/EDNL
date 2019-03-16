@@ -10,8 +10,8 @@ using namespace Enlazada;
 class Abin_2 : public ::testing::Test {
 protected:
   void SetUp() override {
-    std::ifstream isA("abin.txt", std::ifstream::binary);
-    std::ifstream isB("pseudocmp.txt", std::ifstream::binary);
+    std::ifstream isA("files/abin.txt", std::ifstream::binary);
+    std::ifstream isB("files/pseudocmp.txt", std::ifstream::binary);
     isA >> A_;
     isB >> B_;
     isA.close();
@@ -71,7 +71,7 @@ TEST(Abin_2_1, operacion_ostream_operador) {
 
 TEST(Abin_2_1, operacion) {
   Abin<Op> OP;
-  std::ifstream is("op.txt", std::ifstream::binary);
+  std::ifstream is("files/op.txt", std::ifstream::binary);
   is >> OP;
   is.close();
   EXPECT_DOUBLE_EQ(178, operacion(OP));

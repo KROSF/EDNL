@@ -122,7 +122,7 @@ configure_file (
   "${PROJECT_BINARY_DIR}/configversion.h")
 
 file(GLOB FILES "${PROJECT_SOURCE_DIR}/files/*.txt")
-file(COPY ${FILES} DESTINATION "${PROJECT_BINARY_DIR}/")
+file(COPY ${FILES} DESTINATION "${PROJECT_BINARY_DIR}/files/")
 # add the binary tree to the search path for include files
 # so that we will find exampleConfig.h
 include_directories("${PROJECT_BINARY_DIR}")

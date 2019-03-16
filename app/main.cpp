@@ -8,7 +8,7 @@ using namespace Enlazada;
 
 int main() {
   Abin<char> OP;
-  std::ifstream is("complete.txt",std::ifstream::binary);
+  std::ifstream is("files/complete.txt",std::ifstream::binary);
   is >> OP;
   std::cout << OP << std::endl;
 }

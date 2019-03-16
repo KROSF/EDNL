@@ -9,7 +9,7 @@ using namespace Enlazada;
 class Abin_1 : public ::testing::Test {
 protected:
   void SetUp() override {
-    std::ifstream is("abin.txt", std::ifstream::binary);
+    std::ifstream is("files/abin.txt", std::ifstream::binary);
     is >> A_;
     is.close();
   }
@@ -41,7 +41,7 @@ TEST_F(Abin_1, isFullTree_abin_empty) {
 
 TEST(Abin_1_1, isFullTree_abin_true) {
   Abin<char> P_;
-  std::ifstream is("pseudocmp.txt", std::ifstream::binary);
+  std::ifstream is("files/pseudocmp.txt", std::ifstream::binary);
   is >> P_;
   is.close();
   EXPECT_TRUE(isFullTree(P_));
@@ -49,7 +49,7 @@ TEST(Abin_1_1, isFullTree_abin_true) {
 
 TEST(Abin_1_1, isFullTree_ful_true) {
   Abin<char> P_;
-  std::ifstream is("complete.txt", std::ifstream::binary);
+  std::ifstream is("files/complete.txt", std::ifstream::binary);
   is >> P_;
   is.close();
   EXPECT_TRUE(isFullTree(P_));
@@ -57,7 +57,7 @@ TEST(Abin_1_1, isFullTree_ful_true) {
 
 TEST(Abin_1_1, isFullTree_abin_operacion) {
   Abin<Op> P_;
-  std::ifstream is("op.txt", std::ifstream::binary);
+  std::ifstream is("files/op.txt", std::ifstream::binary);
   is >> P_;
   is.close();
   EXPECT_TRUE(isFullTree(P_));
