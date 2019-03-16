@@ -22,7 +22,7 @@ jobs:
     - script: |
         set PATH="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\bin\hostx86\x86\";%PATH%
         mkdir build
-        cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\bin\hostx86\x86\cl.exe -DCMAKE_CXX_COMPILER=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\bin\hostx86\x86\cl.exe
+        cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\bin\hostx86\x86\cl.exe" -DCMAKE_CXX_COMPILER="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\bin\hostx86\x86\cl.exe"
         cmake --build build --config Debug --target unit_tests.x -- -j 6
         cd build && unit_tests.x.exe
       displayName: Testing
