@@ -33,8 +33,12 @@ jobs:
     - script: sudo apt-get install ninja-build
       displayName: Installing ninja build system
     - script: |
+        ls
         mkdir build
+        ls
         cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+        ls
         cmake -S . -B build --config Debug --target unit_tests.x -- -j 6
+        ls
         ./build/unit_tests.x
       displayName: Testing
