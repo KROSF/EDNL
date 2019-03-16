@@ -9,6 +9,5 @@ steps:
 - script: |
     mkdir build
     cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Coverage
-    ninja -C build coverage
-    bash <(curl -s https://codecov.io/bash) -f build/coverage_out.info.cleaned || echo "Codecov did not collect coverage reports"
+    ninja -C build coverage && bash <(curl -s https://codecov.io/bash) -f build/coverage_out.info.cleaned
   displayName: Coverage

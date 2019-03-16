@@ -47,6 +47,14 @@ TEST(Abin_1_1, isFullTree_abin_true) {
   EXPECT_TRUE(isFullTree(P_));
 }
 
+TEST(Abin_1_1, isFullTree_ful_true) {
+  Abin<char> P_;
+  std::ifstream is("complete.txt", std::ifstream::binary);
+  is >> P_;
+  is.close();
+  EXPECT_TRUE(isFullTree(P_));
+}
+
 TEST(Abin_1_1, isFullTree_abin_operacion) {
   Abin<Op> P_;
   std::ifstream is("op.txt", std::ifstream::binary);

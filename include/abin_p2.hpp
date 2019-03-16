@@ -2,7 +2,6 @@
 #define ABIN_P2_HPP
 #include "abin.hpp"
 #include "op.hpp"
-#include <stdexcept>
 namespace Enlazada {
 template <typename T> using Nodo = typename Abin<T>::Nodo;
 template <typename T>
@@ -64,7 +63,7 @@ double operacion_r(const Abin<Op> &a, const Nodo<Op> &n) {
     case '/':
       return operacion_r(a, a.hijoIzqdoB(n)) / operacion_r(a, a.hijoDrchoB(n));
     default:
-      throw new std::invalid_argument("Operador no soportado");
+      return 0;
     }
   }
 }
