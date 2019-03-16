@@ -1,4 +1,5 @@
 #include "abin_p1.hpp"
+#include "op.hpp"
 #include "ioabin.hpp"
 #include <fstream>
 #include <gtest/gtest.h>
@@ -41,6 +42,14 @@ TEST_F(Abin_1, isFullTree_abin_empty) {
 TEST(Abin_1_1, isFullTree_abin_true) {
   Abin<char> P_;
   std::ifstream is("pseudocmp.txt", std::ifstream::binary);
+  is >> P_;
+  is.close();
+  EXPECT_TRUE(isFullTree(P_));
+}
+
+TEST(Abin_1_1, isFullTree_abin_operacion) {
+  Abin<Op> P_;
+  std::ifstream is("op.txt", std::ifstream::binary);
   is >> P_;
   is.close();
   EXPECT_TRUE(isFullTree(P_));
