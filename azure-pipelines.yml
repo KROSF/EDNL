@@ -17,5 +17,10 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-    - script: cmake --version
-    - script: ninja --version
+    - script: choco install ninja
+      displayName: Installing ninja build system
+    - script: |
+        mkdir build
+        cmake --build build --config Debug --target unit_tests.x -- -j 6
+        .\build\unit_tests.x.exe
+      displayName: Testing
