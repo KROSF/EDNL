@@ -18,3 +18,4 @@ jobs:
     vmImage: 'vs2017-win2016'
   steps:
     - script: cmake --version
+    - script: ninja --version
