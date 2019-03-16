@@ -22,7 +22,6 @@ jobs:
     - script: |
         mkdir build
         cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
-        cmake --build build --config Debug --target unit_tests.x -- -j 6
         cd build && unit_tests.x.exe
       displayName: Testing
 - job: 'Ubuntu'
@@ -34,6 +33,5 @@ jobs:
     - script: |
         mkdir build
         cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
-        cmake --build build --config Debug --target unit_tests.x -- -j 6
-        ./build/unit_tests.x.exe
+        ./build/unit_tests.x
       displayName: Testing
