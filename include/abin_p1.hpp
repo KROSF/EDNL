@@ -42,10 +42,6 @@ template <typename T> bool isFullTree_r(const Abin<T> &a, const Nodo<T> &n) {
       return true;
     }
     return false;
-  } else if (a.altura(a.hijoDrchoB(n)) > a.altura(a.hijoIzqdoB(n))) {
-    return isFullTree_r(a, a.hijoDrchoB(n));
-  } else if (a.altura(a.hijoDrchoB(n)) < a.altura(a.hijoIzqdoB(n))) {
-    return isFullTree_r(a, a.hijoIzqdoB(n));
   }
   return isFullTree_r(a, a.hijoDrchoB(n)) && isFullTree_r(a, a.hijoIzqdoB(n));
 }
