@@ -36,8 +36,7 @@ void postOrder(Abin<T> &a, const Nodo<T> &n, Callback<T> procesar) {
 }
 
 template <typename T>
-void preOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {
-}
+void preOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
 
 template <typename T>
 void inOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
@@ -100,7 +99,6 @@ template <typename T>
 void inOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
 
 template <typename T>
-void postOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {
-}
+void postOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
 } // namespace Enlazada
 #endif

@@ -49,7 +49,20 @@ template <typename T> Abin<T> reflejo(const Abin<T> &a) {
 }
 
 double operacion_r(const Abin<Op> &a, const Nodo<Op> &n) {
-  
+  if (a.hijoIzqdoB(n) == Abin<Op>::NODO_NULO &&
+      a.hijoDrchoB(n) == Abin<Op>::NODO_NULO) {
+    return a.elemento(n).operando;
+  }
+  switch (a.elemento(n).operador) {
+  case '+':
+    return operacion_r(a, a.hijoIzqdoB(n)) + operacion_r(a, a.hijoDrchoB(n));
+  case '-':
+    return operacion_r(a, a.hijoIzqdoB(n)) - operacion_r(a, a.hijoDrchoB(n));
+  case '*':
+    return operacion_r(a, a.hijoIzqdoB(n)) * operacion_r(a, a.hijoDrchoB(n));
+  case '/':
+    return operacion_r(a, a.hijoIzqdoB(n)) / operacion_r(a, a.hijoDrchoB(n));
+  }
 }
 
 double operacion(const Abin<Op> &a) { return operacion_r(a, a.raizB()); }
