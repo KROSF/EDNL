@@ -31,4 +31,12 @@ TEST_F(Abin_1, profundidad_abin_nodo) {
 
 TEST_F(Abin_1, desequilibrio_abin_raiz) { EXPECT_EQ(2, desequilibrio(A_)); }
 
-TEST_F(Abin_1, isFullTree_abin) { EXPECT_FALSE(isFullTree(A_)); }
+TEST_F(Abin_1, isFullTree_abin_false) { EXPECT_FALSE(isFullTree(A_)); }
+
+TEST(Abin_1_1, isFullTree_abin_true) {
+  Abin<char> P_;
+  std::ifstream is("pseudocmp.txt", std::ifstream::binary);
+  is >> P_;
+  is.close();
+  EXPECT_TRUE(isFullTree(P_));
+}

@@ -63,6 +63,7 @@ double operacion_r(const Abin<Op> &a, const Nodo<Op> &n) {
   case '/':
     return operacion_r(a, a.hijoIzqdoB(n)) / operacion_r(a, a.hijoDrchoB(n));
   }
+  return 0;
 }
 
 double operacion(const Abin<Op> &a) { return operacion_r(a, a.raizB()); }

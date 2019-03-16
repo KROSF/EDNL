@@ -34,7 +34,7 @@ void postOrder(Abin<T> &a, const Nodo<T> &n, Callback<T> procesar) {
     procesar(a, n);
   }
 }
-
+#ifdef ITER
 template <typename T>
 void preOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
 
@@ -43,6 +43,7 @@ void inOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
 
 template <typename T>
 void postOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
+#endif
 
 } // namespace Vectorial
 
@@ -77,7 +78,7 @@ void postOrder(Abin<T> &a, const Nodo<T> &n, Callback<T> procesar) {
     procesar(a, n);
   }
 }
-
+#ifdef ITER
 template <typename T>
 void preOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {
   std::stack<Nodo<T>> pila;
@@ -100,5 +101,6 @@ void inOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
 
 template <typename T>
 void postOrderIter(Abin<T> &a, Nodo<T> n, Callback<T> procesar) {}
+#endif
 } // namespace Enlazada
 #endif
