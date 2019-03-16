@@ -3,6 +3,7 @@
 #include "pathabin.hpp"
 #include <fstream>
 #include <gtest/gtest.h>
+#include <sstream>
 
 using namespace Enlazada;
 
@@ -19,12 +20,21 @@ protected:
   Abin<char> A_;
   Abin<char> B_;
 };
-
-TEST_F(Abin_2, similar_tree_false) { EXPECT_FALSE(A_ ^ B_); }
-
 TEST_F(Abin_2, similar_tree_true) {
   Abin<char> C_{A_};
   EXPECT_TRUE(A_ ^ C_);
+}
+
+TEST_F(Abin_2, similar_tree_false) { EXPECT_FALSE(A_ ^ B_); }
+
+TEST_F(Abin_2, similar_tree_empty_true) {
+  Abin<char> eA, eB;
+  EXPECT_TRUE(eA ^ eB);
+}
+
+TEST_F(Abin_2, similar_tree_empty_false) {
+  Abin<char> eA;
+  EXPECT_FALSE(A_ ^ eA);
 }
 
 TEST_F(Abin_2, reflejo_abin) {
@@ -45,7 +55,21 @@ TEST_F(Abin_2, reflejo_pseudocmp) {
   EXPECT_EQ("agikmljhbefcd", srB);
 }
 
-TEST(Abin_2_1, isFullTree_abin_true) {
+TEST(Abin_2_1, operacion_ostream_operando) {
+  Op op;
+  std::ostringstream stream;
+  stream << op;
+  EXPECT_EQ("0", stream.str());
+}
+
+TEST(Abin_2_1, operacion_ostream_operador) {
+  Op op(0, '+');
+  std::ostringstream stream;
+  stream << op;
+  EXPECT_EQ("+", stream.str());
+}
+
+TEST(Abin_2_1, operacion) {
   Abin<Op> OP;
   std::ifstream is("op.txt", std::ifstream::binary);
   is >> OP;

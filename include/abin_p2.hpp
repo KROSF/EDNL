@@ -2,6 +2,7 @@
 #define ABIN_P2_HPP
 #include "abin.hpp"
 #include "op.hpp"
+#include <stdexcept>
 namespace Enlazada {
 template <typename T> using Nodo = typename Abin<T>::Nodo;
 template <typename T>
@@ -52,18 +53,20 @@ double operacion_r(const Abin<Op> &a, const Nodo<Op> &n) {
   if (a.hijoIzqdoB(n) == Abin<Op>::NODO_NULO &&
       a.hijoDrchoB(n) == Abin<Op>::NODO_NULO) {
     return a.elemento(n).operando;
+  } else {
+    switch (a.elemento(n).operador) {
+    case '+':
+      return operacion_r(a, a.hijoIzqdoB(n)) + operacion_r(a, a.hijoDrchoB(n));
+    case '-':
+      return operacion_r(a, a.hijoIzqdoB(n)) - operacion_r(a, a.hijoDrchoB(n));
+    case '*':
+      return operacion_r(a, a.hijoIzqdoB(n)) * operacion_r(a, a.hijoDrchoB(n));
+    case '/':
+      return operacion_r(a, a.hijoIzqdoB(n)) / operacion_r(a, a.hijoDrchoB(n));
+    default:
+      throw new std::invalid_argument("Operador no soportado");
+    }
   }
-  switch (a.elemento(n).operador) {
-  case '+':
-    return operacion_r(a, a.hijoIzqdoB(n)) + operacion_r(a, a.hijoDrchoB(n));
-  case '-':
-    return operacion_r(a, a.hijoIzqdoB(n)) - operacion_r(a, a.hijoDrchoB(n));
-  case '*':
-    return operacion_r(a, a.hijoIzqdoB(n)) * operacion_r(a, a.hijoDrchoB(n));
-  case '/':
-    return operacion_r(a, a.hijoIzqdoB(n)) / operacion_r(a, a.hijoDrchoB(n));
-  }
-  return 0;
 }
 
 double operacion(const Abin<Op> &a) { return operacion_r(a, a.raizB()); }
