@@ -20,7 +20,7 @@ jobs:
     - script: choco install ninja
       displayName: Installing ninja build system
     - script: |
-        set PATH="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\bin\hostx86\x86\;%PATH%"
+        set path C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\bin\hostx86\x86\;%PATH%
         mkdir build
         cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
         cmake --build build --config Debug --target unit_tests.x -- -j 6
