@@ -1,0 +1,83 @@
+cmake_minimum_required(VERSION 3.1.3)
+
+project(EDNL VERSION 0.2.3.3 LANGUAGES CXX)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+include(ConfigSafeGuards)
+include(Colors)
+
+# --------------------------------------------------------------------------------
+#                          Compile flags
+# --------------------------------------------------------------------------------
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")  
+SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+SET(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+message(STATUS "Building with the following extra flags: ${CMAKE_CXX_FLAGS}")
+
+# --------------------------------------------------------------------------------
+#                         Locate files
+# --------------------------------------------------------------------------------
+include_directories(
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/tests
+    ${PROJECT_SOURCE_DIR}/external/googletest
+    ${PROJECT_SOURCE_DIR}/external/googletest/include)
+
+file(GLOB SOURCES "src/*.cpp")
+file(GLOB TESTFILES "tests/*.cpp")
+set(TEST_MAIN unit_tests.x)
+
+# --------------------------------------------------------------------------------
+#                            Build!
+# --------------------------------------------------------------------------------
+add_library( engine ${SOURCES})
+add_executable(main.x app/main.cpp)
+add_dependencies(main.x engine)
+target_link_libraries(main.x engine)
+
+# --------------------------------------------------------------------------------
+#                         Make Tests
+# --------------------------------------------------------------------------------
+add_executable(${TEST_MAIN} ${TESTFILES})
+add_dependencies(${TEST_MAIN} googletest engine)
+target_link_libraries(${TEST_MAIN} googletest engine pthread)
+add_custom_target(gtest 
+    COMMAND "${PROJECT_BINARY_DIR}/${TEST_MAIN}"
+    DEPENDS engine ${TEST_MAIN})
+include(CTest)
+enable_testing()
+add_test(unit_tests ${PROJECT_BINARY_DIR}/${TEST_MAIN})
+
+# --------------------------------------------------------------------------------
+#                         Code Coverage
+# --------------------------------------------------------------------------------
+include(CodeCoverage)
+
+# --------------------------------------------------------------------------------
+#                         Google Test (no change needed).
+# --------------------------------------------------------------------------------
+add_custom_target( git_update
+    COMMAND git submodule init
+    COMMAND git submodule update
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_library( googletest
+    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc
+    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc )
+add_dependencies(googletest git_update)
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc  PROPERTIES GENERATED 1)
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc PROPERTIES GENERATED 1)
+
+# --------------------------------------------------------------------------------
+#                            Misc
+# --------------------------------------------------------------------------------
+configure_file (
+  "${PROJECT_SOURCE_DIR}/include/configversion.h.in"
+  "${PROJECT_BINARY_DIR}/configversion.h")
+
+file(GLOB FILES "${PROJECT_SOURCE_DIR}/files/*.txt")
+file(COPY ${FILES} DESTINATION "${PROJECT_BINARY_DIR}/files/")
+
+include_directories("${PROJECT_BINARY_DIR}")
+set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )
