@@ -8,7 +8,7 @@ namespace Enlazada {
 template <typename T> using Nodo = typename Agen<T>::Nodo;
 
 template <typename T>
-void printAbin(std::ostream &os, const Agen<T> &a, const Nodo<T> &n,
+void printAgen(std::ostream &os, const Agen<T> &a, const Nodo<T> &n,
                Trunk *prev, bool isLeft) {
   if (n == Agen<T>::NODO_NULO) {
     return;
@@ -17,7 +17,7 @@ void printAbin(std::ostream &os, const Agen<T> &a, const Nodo<T> &n,
   Trunk *trunk = new Trunk(prev, prev_str);
   auto hijo = a.hijoIzqdo(n);
   if (hijo != Agen<T>::NODO_NULO) {
-    printAbin(os, a, hijo, trunk, true);
+    printAgen(os, a, hijo, trunk, true);
     if (!prev) {
       trunk->_str = "    ";
     } else if (isLeft) {
@@ -30,7 +30,7 @@ void printAbin(std::ostream &os, const Agen<T> &a, const Nodo<T> &n,
     showTrunks(os, trunk);
     os << a.elemento(n) << std::endl;
     while ((hijo = a.hermDrcho(hijo)) != Agen<T>::NODO_NULO) {
-      printAbin(os, a, hijo, trunk, false);
+      printAgen(os, a, hijo, trunk, false);
     }
   } else {
     if (!prev) {
@@ -74,7 +74,7 @@ std::ifstream &operator>>(std::ifstream &ifs, Agen<T> &a) {
 
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Agen<T> &a) {
-  printAbin(os, a, a.raiz(), nullptr, false);
+  printAgen(os, a, a.raiz(), nullptr, false);
   return os;
 }
 
