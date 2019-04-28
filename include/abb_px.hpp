@@ -3,7 +3,6 @@
 #include "abb.hpp"
 #include <algorithm>
 #include <functional>
-#include <iterator>
 #include <vector>
 
 template <typename T>
@@ -16,10 +15,12 @@ void inOrder(const Abb<T> &a, std::function<void(const Abb<T> &)> func) {
 }
 
 template <typename T> void equilibrar(Abb<T> &a) {
-  std::vector<T> v;
-  inOrder<T>(a, [&v](const Abb<T> &e) { v.push_back(e.elemento()); });
-  a.~Abb();
-  equilibrar_r(a, v, v.size(), 0);
+  if (!a.vacio()) {
+    std::vector<T> v;
+    inOrder<T>(a, [&v](const Abb<T> &e) { v.push_back(e.elemento()); });
+    a.~Abb();
+    equilibrar_r(a, v, v.size(), 0);
+  }
 }
 
 template <typename T>
@@ -52,12 +53,9 @@ void interseccion_r(const Abb<T> &a, const Abb<T> &b, Abb<T> &inter) {
   if (!a.vacio() && !b.vacio()) {
     if (!a.buscar(b.elemento()).vacio()) {
       inter.insertar(b.elemento());
-      interseccion_r(a, b.izquierdo(), inter);
-      interseccion_r(a, b.derecho(), inter);
-    } else {
-      interseccion_r(a, b.izquierdo(), inter);
-      interseccion_r(a, b.derecho(), inter);
     }
+    interseccion_r(a, b.izquierdo(), inter);
+    interseccion_r(a, b.derecho(), inter);
   }
 }
 
@@ -73,12 +71,9 @@ void diferencia_r(const Abb<T> &a, const Abb<T> &b, Abb<T> &diff) {
   if (!a.vacio()) {
     if (b.buscar(a.elemento()).vacio()) {
       diff.insertar(a.elemento());
-      diferencia_r(a.izquierdo(), b, diff);
-      diferencia_r(a.derecho(), b, diff);
-    } else {
-      diferencia_r(a.izquierdo(), b, diff);
-      diferencia_r(a.derecho(), b, diff);
     }
+    diferencia_r(a.izquierdo(), b, diff);
+    diferencia_r(a.derecho(), b, diff);
   }
 }
 
