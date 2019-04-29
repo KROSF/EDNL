@@ -2,7 +2,7 @@
 #define PATHABIN_HPP
 
 #include "abin.hpp"
-#include <stack>
+#include <functional>
 
 namespace Vectorial {
 
