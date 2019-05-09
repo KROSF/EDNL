@@ -1,6 +1,6 @@
-#include "trunk.hpp"
+#include "arboles/trunk.hpp"
 
-Trunk::Trunk(Trunk *prev, std::string str): _prev(prev), _str(str) {}
+Trunk::Trunk(Trunk *prev, std::string str) : _prev(prev), _str(str) {}
 
 void showTrunks(std::ostream &os, Trunk *p) {
   if (p == nullptr) {

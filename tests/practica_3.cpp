@@ -1,10 +1,10 @@
-#include "agen_p1.hpp"
-#include "ioagen.hpp"
-#include <fstream>
 #include <gtest/gtest.h>
+#include <fstream>
+#include "arboles/agen_p1.hpp"
+#include "arboles/ioagen.hpp"
 using namespace Enlazada;
 class Practica_3 : public ::testing::Test {
-protected:
+ protected:
   void SetUp() override {
     std::ifstream is("files/agen.txt", std::ifstream::binary);
     is >> A_;

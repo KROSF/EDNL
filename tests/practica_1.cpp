@@ -1,13 +1,13 @@
-#include "abin_p1.hpp"
-#include "ioabin.hpp"
-#include "op.hpp"
-#include <fstream>
 #include <gtest/gtest.h>
+#include <fstream>
+#include "arboles/abin_p1.hpp"
+#include "arboles/ioabin.hpp"
+#include "arboles/op.hpp"
 
 using namespace Enlazada;
 
 class Practica_1 : public ::testing::Test {
-protected:
+ protected:
   void SetUp() override {
     std::ifstream is("files/abin.txt", std::ifstream::binary);
     is >> A_;

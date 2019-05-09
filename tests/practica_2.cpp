@@ -1,14 +1,14 @@
-#include "abin_p2.hpp"
-#include "ioabin.hpp"
-#include "pathabin.hpp"
-#include <fstream>
 #include <gtest/gtest.h>
+#include <fstream>
 #include <sstream>
+#include "arboles/abin_p2.hpp"
+#include "arboles/ioabin.hpp"
+#include "arboles/pathabin.hpp"
 
 using namespace Enlazada;
 
 class Practica_2 : public ::testing::Test {
-protected:
+ protected:
   void SetUp() override {
     std::ifstream isA("files/abin.txt", std::ifstream::binary);
     std::ifstream isB("files/pseudocmp.txt", std::ifstream::binary);

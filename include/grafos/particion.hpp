@@ -2,10 +2,14 @@
 #define PARTICION_HPP
 #include <vector>
 namespace grafos {
+// Representa una particion de elemento en el rango de int
 class Particion {
  public:
+  // Crea una particion de n elementos.
   Particion(int n) : padre(n, -1) {}
+  // Une dos elementos:
   void unir(int a, int b);
+  // Busca una particion.
   int encontrar(int x) const;
 
  private:
@@ -23,7 +27,6 @@ void Particion::unir(int a, int b) {
 
 int Particion::encontrar(int x) const {
   int y, raiz = x;
-
   while (padre[raiz] > -1) raiz = padre[raiz];
   while (padre[x] > -1) {
     y = padre[x];

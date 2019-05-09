@@ -2,33 +2,53 @@
 #define LISTA_HPP
 namespace grafos {
 template <typename T>
+// Lista Dinamica Simplemente Enlazada
 class Lista {
+  // Nodos de la lista.
   struct nodo;
 
  public:
+  // Posicion de un nodo en la lista.
   using posicion = nodo*;
+  // Crea una lista vacia.
   Lista() : L{new nodo(T())} {}
+  // Crea una copia de una lista.
   Lista(const Lista<T>& l) { copiar(l); }
   Lista<T>& operator=(const Lista<T>& l);
   Lista<T>& operator+=(const Lista<T>& l);
+  // Inserta un elemento en posicion de la lista.
   void insertar(const T& x, posicion p);
+  // Elimina la posicion del elemento.
   void eliminar(posicion p);
+  // Devuelve el elemento en la posicion.
   const T& elemento(posicion p) const;
+  // Devuelve una referencia del elemento en la posicion.
   T& elemento(posicion p);
+  // Devuelve la posicion de un elemento
   posicion buscar(const T& x) const;
+  // Devuelve la posicion siguiente a p.
   posicion siguiente(posicion p) const;
+  // Devuelve la posicion anterior a p.
   posicion anterior(posicion p) const;
+  // Devuelve la primera posicion de la lista.
   posicion primera() const { return L; }
+  // Devuelve la posicion siguiente a la ultima.
   posicion fin() const;
+  // Destruye la lista.
   ~Lista();
 
  private:
   struct nodo {
+    // Elemento en el nodo.
     T elto;
+    // Siguiente nodo.
     nodo* sig;
+    // Constructor de nodo.
     nodo(const T& e, nodo* p = nullptr) : elto(e), sig(p) {}
   };
+  // Lista de nodos.
   nodo* L;
+  // Copia una lista en otra.
   void copiar(const Lista<T>& l);
 };
 

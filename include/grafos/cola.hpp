@@ -3,9 +3,12 @@
 #include <cassert>
 namespace grafos {
 template <typename T>
+// Cola Dinamica
 class Cola {
  public:
+  // Crea una cola vacia.
   Cola() : inicio{nullptr}, fin{nullptr} {}
+  // Crea una copia de la cola c.
   Cola(const Cola<T>& c) : inicio{nullptr}, fin{nullptr} { copiar(c); }
   Cola<T>& operator=(const Cola<T>& c) {
     if (this != &c) {
@@ -13,20 +16,32 @@ class Cola {
       copiar(c);
     }
   }
+  // Comprueba si la cola esta vacia.
   bool vacia() const { return inicio == nullptr; }
+  // Devuelve el primer elemento de la cola.
   const T& frente() const;
+  // Elimina el primer elemento de la cola.
   void pop();
+  // Insertar un elemento al final de la cola.
   void push(const T& x);
+  // Destruye la cola.
   ~Cola();
 
  private:
+  // Estrutura de elementos de la cola.
   struct nodo {
+    // Elemento almacenado en la cola.
     T elto;
+    // Nodo siguiente.
     nodo* sig;
+    // Constructor de nodos.
     nodo(const T& e, nodo* p = nullptr) : elto{e}, sig{p} {}
   };
+  // Inicio de la cola.
   nodo* inicio;
+  // Fin de la cola.
   nodo* fin;
+  // Metodo privado para copiar una cola.
   void copiar(const Cola<T>&);
 };
 

@@ -1,13 +1,13 @@
-#include "abb.hpp"
-#include "abb_px.hpp"
-#include "ioabin.hpp"
-#include <fstream>
 #include <gtest/gtest.h>
+#include <fstream>
+#include "arboles/abb.hpp"
+#include "arboles/abb_px.hpp"
+#include "arboles/ioabin.hpp"
 
 class Practica_4 : public ::testing::Test {
   Enlazada::Abin<char> A, B;
 
-protected:
+ protected:
   void SetUp() override {
     std::ifstream isa("files/abin.txt", std::ifstream::binary);
     std::ifstream isb("files/abb.txt", std::ifstream::binary);
@@ -24,13 +24,14 @@ protected:
 };
 
 TEST_F(Practica_4, ejercicio_1_poda) {
-Enlazada::Abin<int> aint;
+  Enlazada::Abin<int> aint;
   std::ifstream isa("files/abb_poda.txt", std::ifstream::binary);
   isa >> aint;
   Abb<int> abbint{aint};
   abbint.podar(9);
   std::string s;
-  inOrder<int>(abbint, [&s](const Abb<int> &e) { s += std::to_string(e.elemento()); });
+  inOrder<int>(abbint,
+               [&s](const Abb<int> &e) { s += std::to_string(e.elemento()); });
   EXPECT_EQ("571217", s);
 }
 

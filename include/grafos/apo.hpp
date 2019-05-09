@@ -3,28 +3,44 @@
 namespace grafos {
 #include <cassert>
 template <typename T>
+// Arbol Parcialmente Ordenado
 class Apo {
  public:
-  explicit Apo(size_t max_n) : max{max_n}, nodos{new T[max]}, ultimo{-1} {}
+  // Construye un Arbol Parcialmente Ordenado.
+  explicit Apo(std::size_t max_n) : max{max_n}, nodos{new T[max]}, ultimo{-1} {}
+  // Crea una copia de un Arbol Parcialmente Ordenado.
   Apo(const Apo& a) : max{a.max}, nodos{new T[max]}, ultimo{a.ultimo} {
     for (nodo n = 0; n <= ultimo; n++) nodos[n] = a.nodos[n];
   }
   Apo& operator=(const Apo&);
+  // Inserta un elemento en el arbol.
   void insertar(const T& e);
+  // Elimina elemento en la raiz del arbol.
   void suprimir();
+  // Devuelve el elemento de la raiz del arbol.
   const T& cima() const;
+  // Comprueba si el arbol esta vacio.
   bool vacio() const { return ultimo == -1; }
+  // Destruye el Arbol
   ~Apo() { delete[] nodos; }
 
  private:
   using nodo = int;
+  // Numero Maximo de elementos que puede contener el arbol.
   int max;
+  // Nodos que componen el arbol.
   T* nodos;
+  // Posicion del ultimo nodo insertado.
   nodo ultimo;
+  // Flota un elemento hacia la cima.
   void flotar(nodo);
+  // Hunde un elemento hacia el fondo.
   void hundir(nodo);
+  // Devuelve la posicion del padre de un nodo.
   nodo padre(nodo n) const { return (n - 1) / 2; }
+  // Devuelve el hijo izquierdo de un nodo.
   nodo hIzq(nodo n) const { return 2 * n + 1; }
+  // Devuelve el hijo derecho de un nodo.
   nodo hDer(nodo n) const { return 2 * n + 2; }
 };
 
