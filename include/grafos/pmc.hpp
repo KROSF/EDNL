@@ -18,7 +18,7 @@ class GrafoP {
  public:
   using tCoste = T;
   using vertice = std::size_t;
-  using tCamino = Lista<vertice> tCamino;
+  using tCamino = Lista<vertice>;
   inline static const tCoste INFINITO = std::numeric_limits<T>::max();
   struct arista {
     explicit arista(vertice v = vertice(), vertice w = vertice(),
@@ -46,7 +46,7 @@ GrafoP<T>::GrafoP(const std::string& path) {
   file >> n;
   costes = vector<vector<T>>(n, vector<T>(n));
   for (vertice i = 0; i < n; ++i) {
-    for (vertice j = 0; i < n; ++j) {
+    for (vertice j = 0; j < n; ++j) {
       file >> costes[i][j];
     }
   }

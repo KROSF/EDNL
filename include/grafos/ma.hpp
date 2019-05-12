@@ -5,7 +5,6 @@
 #include <ostream>
 #include <string>
 #include <vector>
-#include "grafos/pmc.hpp"
 using std::vector;
 namespace grafos {
 namespace ma {
@@ -20,11 +19,10 @@ class Grafo {
   explicit Grafo(const std::string& path);
   template <typename T>
   // Copia un grado ponderado a grafo MA
-  Grafo(const pmc::GrafoP<T>& g) : ady(G.numVert(), vector<bool>(G.numVert())) {
+  Grafo(const T& G) : ady(G.numVert(), vector<bool>(G.numVert())) {
     const size_t n = G.numVert();
     for (vertice i = 0; i < n; i++)
-      for (vertice j = 0; j < n; j++)
-        ady[i][j] = (G[i][j] != GrafoP<T>::INFINITO);
+      for (vertice j = 0; j < n; j++) ady[i][j] = (G[i][j] != T::INFINITO);
   }
   // Numero de vertices del grafo.
   std::size_t numVert() const { return ady.size(); }

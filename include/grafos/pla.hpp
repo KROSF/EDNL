@@ -47,7 +47,7 @@ template <typename T>
 GrafoP<T>::GrafoP(const std::string& path) {
   char c;
   std::string cad;
-  vertice v, w;
+  vertice v;
   tCoste p;
   vertice_coste vc;
   std::ifstream file(path);
@@ -67,8 +67,7 @@ GrafoP<T>::GrafoP(const std::string& path) {
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
   using vertice = typename GrafoP<T>::vertice;
-  using posicion =
-      typename Lista<typename GrafoP<T>::vertice_coste>::posicion posicion;
+  using posicion = typename Lista<typename GrafoP<T>::vertice_coste>::posicion;
   const size_t n = g.numVert();
   os << n << " vertices" << std::endl;
   for (vertice i = 0; i < n; i++)

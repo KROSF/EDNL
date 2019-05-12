@@ -7,7 +7,8 @@ template <typename T>
 class Apo {
  public:
   // Construye un Arbol Parcialmente Ordenado.
-  explicit Apo(std::size_t max_n) : max{max_n}, nodos{new T[max]}, ultimo{-1} {}
+  explicit Apo(std::size_t max_n)
+      : max{static_cast<int>(max_n)}, nodos{new T[max]}, ultimo{-1} {}
   // Crea una copia de un Arbol Parcialmente Ordenado.
   Apo(const Apo& a) : max{a.max}, nodos{new T[max]}, ultimo{a.ultimo} {
     for (nodo n = 0; n <= ultimo; n++) nodos[n] = a.nodos[n];

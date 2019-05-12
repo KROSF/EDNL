@@ -1,6 +1,14 @@
-#include <fstream>
 #include <iostream>
-#include "grafos/lista.hpp"
-using namespace grafos;
+#include <string>
+#include "grafos/alg.hpp"
+#include "grafos/io.hpp"
 
-int main() { Lista<int> l; }
+using namespace grafos;
+using std::cout;
+using std::endl;
+
+int main(void) {
+  std::string path("files/grafopmc.txt");
+  pmc::GrafoP<int> G(path);
+  cout << G << endl;
+}
