@@ -143,8 +143,8 @@ matriz<tCoste> Floyd(const GrafoP<tCoste>& G, matriz<vertice<tCoste>>& P) {
     A[i][i] = 0;
     P[i] = vector<vertice<tCoste>>(n, i);
   }
-  for (vertice<tCoste> k = 0; k < n; k++)
-    for (vertice<tCoste> i = 0; i < n; i++)
+  for (vertice<tCoste> k = 0; k < n; k++) {
+    for (vertice<tCoste> i = 0; i < n; i++) {
       for (vertice<tCoste> j = 0; j < n; j++) {
         tCoste ikj = suma(A[i][k], A[k][j]);
         if (ikj < A[i][j]) {
@@ -152,6 +152,8 @@ matriz<tCoste> Floyd(const GrafoP<tCoste>& G, matriz<vertice<tCoste>>& P) {
           P[i][j] = k;
         }
       }
+    }
+  }
   return A;
 }
 

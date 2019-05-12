@@ -37,6 +37,10 @@ add_executable(main.x app/main.cpp)
 add_dependencies(main.x engine)
 target_link_libraries(main.x engine)
 
+add_executable(dijkstra.x app/dijkstra.cpp)
+add_dependencies(dijkstra.x engine)
+target_link_libraries(dijkstra.x engine)
+
 # --------------------------------------------------------------------------------
 #                         Make Tests
 # --------------------------------------------------------------------------------

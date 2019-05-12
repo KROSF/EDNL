@@ -84,19 +84,28 @@ template <typename T>
 std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
   using vertice = typename GrafoP<T>::vertice;
   const std::size_t n = g.numVert();
-  std::size_t elto_long = std::to_string(GrafoP<T>::INFINITO).size();
+  std::size_t digits{0};
+  for (std::size_t i = 0; i < n; ++i) {
+    for (std::size_t j = 0; j < n; ++j) {
+      if (g[i][j] != GrafoP<T>::INFINITO &&
+          static_cast<std::size_t>(g[i][j]) > digits) {
+        digits = g[i][j];
+      }
+    }
+  }
+  digits = std::to_string(digits).size() + 1;
   os << "\033[1m\033[31m" << n << " vertices\n\033[32m ";
   for (vertice j = 0; j < n; j++) {
-    os << std::setw(elto_long) << j;
+    os << std::setw(digits) << j;
   }
   os << "\033[00m\n";
   for (vertice i = 0; i < n; i++) {
-    os << "\033[1m\033[32m" << i << "\033[00m" << std::setw(elto_long);
+    os << "\033[1m\033[32m" << i << "\033[00m" << std::setw(digits);
     for (vertice j = 0; j < n; j++) {
       if (g[i][j] == GrafoP<T>::INFINITO) {
-        os << std::setw(elto_long + 16) << "\033[1m\033[34m\u221E\033[00m";
+        os << std::setw(digits + 16) << "\033[1m\033[34m\u221E\033[00m";
       } else {
-        os << std::setw(elto_long) << g[i][j];
+        os << std::setw(digits) << g[i][j];
       }
     }
     os << std::endl;

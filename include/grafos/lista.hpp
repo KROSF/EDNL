@@ -1,5 +1,6 @@
 #ifndef LISTA_HPP
 #define LISTA_HPP
+#include <cassert>
 namespace grafos {
 template <typename T>
 // Lista Dinamica Simplemente Enlazada
