@@ -1,11 +1,11 @@
 #ifndef AGENDA_HPP
 #define AGENDA_HPP
-#include "abb.hpp"
 #include <string>
+#include "abb.hpp"
 
 class Contacto {
-public:
-  Contacto(std::string nom, unsigned num) : nombre{nom}, num{numero} {}
+ public:
+  Contacto(std::string nom, unsigned num) : nombre{nom}, numero{num} {}
   std::string nombre;
   unsigned numero;
 };
@@ -23,7 +23,7 @@ bool operator==(const Contacto &a, const Contacto &b) {
 }
 
 class Agenda {
-public:
+ public:
   Agenda();
   void insertar(const Contacto &c) { agenda.insertar(c); }
   void eliminar(const Contacto &c) { agenda.eliminar(c); }
@@ -32,7 +32,7 @@ public:
     return (!found.vacio()) ? found.elemento() : Contacto("No Encontrado", 0);
   }
 
-private:
+ private:
   Abb<Contacto> agenda;
 };
 #endif
