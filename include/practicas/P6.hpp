@@ -50,12 +50,12 @@ bool esAciclico(const GrafoP<T>& G) {
   bool ciclo{true};
   const size_t n = G.numVert();
   matriz<T> A(n);
-  for (vertice<T> i = 0; i < n; i++) {
+  for (vertice<T> i = 0; i < n; ++i) {
     A[i] = G[i];
   }
-  for (vertice<T> k = 0; k < n; k++) {
-    for (vertice<T> i = 0; i < n; i++) {
-      for (vertice<T> j = 0; j < n; j++) {
+  for (vertice<T> k = 0; k < n; ++k) {
+    for (vertice<T> i = 0; i < n; ++i) {
+      for (vertice<T> j = 0; j < n; ++j) {
         T ikj = suma(A[i][k], A[k][j]);
         if (ikj < A[i][j]) {
           A[i][j] = ikj;

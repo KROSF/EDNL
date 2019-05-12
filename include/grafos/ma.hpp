@@ -26,8 +26,8 @@ class Grafo {
   // Copia un grado ponderado a grafo MA
   Grafo(const pmc::GrafoP<T>& G) : ady(G.numVert(), vector<bool>(G.numVert())) {
     const size_t n = G.numVert();
-    for (vertice i = 0; i < n; i++)
-      for (vertice j = 0; j < n; j++)
+    for (vertice i = 0; i < n; ++i)
+      for (vertice j = 0; j < n; ++j)
         ady[i][j] = (G[i][j] != pmc::GrafoP<T>::INFINITO);
   }
   // Numero de vertices del grafo.
@@ -80,11 +80,11 @@ std::ostream& operator<<(std::ostream& os, const Grafo& g) {
   const std::size_t n = g.numVert();
   os << n << " vertices" << std::endl;
   os << "   ";
-  for (vertice j = 0; j < n; j++) os << std::setw(3) << j;
+  for (vertice j = 0; j < n; ++j) os << std::setw(3) << j;
   os << std::endl;
-  for (vertice i = 0; i < n; i++) {
+  for (vertice i = 0; i < n; ++i) {
     os << std::setw(3) << i;
-    for (vertice j = 0; j < n; j++) os << std::setw(3) << g[i][j];
+    for (vertice j = 0; j < n; ++j) os << std::setw(3) << g[i][j];
     os << std::endl;
   }
   return os;

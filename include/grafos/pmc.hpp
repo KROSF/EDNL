@@ -57,8 +57,8 @@ template <typename T>
 GrafoP<T>::GrafoP(const ma::Grafo& g)
     : costes(g.numVert(), vector<T>(g.numVert())) {
   const size_t n = g.numVert();
-  for (vertice i = 0; i < n; i++) {
-    for (vertice j = 0; j < n; j++) {
+  for (vertice i = 0; i < n; ++i) {
+    for (vertice j = 0; j < n; ++j) {
       costes[i][j] = g[i][j] ? 1 : GrafoP<T>::INFINITO;
     }
   }
@@ -95,13 +95,13 @@ std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
   }
   digits = std::to_string(digits).size() + 1;
   os << "\033[1m\033[31m" << n << " vertices\n\033[32m ";
-  for (vertice j = 0; j < n; j++) {
+  for (vertice j = 0; j < n; ++j) {
     os << std::setw(digits) << j;
   }
   os << "\033[00m\n";
-  for (vertice i = 0; i < n; i++) {
+  for (vertice i = 0; i < n; ++i) {
     os << "\033[1m\033[32m" << i << "\033[00m" << std::setw(digits);
-    for (vertice j = 0; j < n; j++) {
+    for (vertice j = 0; j < n; ++j) {
       if (g[i][j] == GrafoP<T>::INFINITO) {
         os << std::setw(digits + 16) << "\033[1m\033[34m\u221E\033[00m";
       } else {

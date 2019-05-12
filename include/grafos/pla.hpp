@@ -29,9 +29,9 @@ class GrafoP {
     bool operator==(const vertice_coste& vc) const { return v == vc.v; }
   };
   // Crea un grafo ponderado PLA
-  GrafoP(std::size_t n) : ady(n) {}
+  explicit GrafoP(std::size_t n) : ady(n) {}
   // Crea un grafo ponderado PLA desde fichero.
-  GrafoP(std::string_view path);
+  explicit GrafoP(std::string_view path);
   // Numero de vertices del grafo.
   std::size_t numVert() const { return ady.size(); }
   // Lista de coste del vertice adyacente.

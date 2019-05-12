@@ -51,9 +51,9 @@ vector<tCoste> Dijkstra(const GrafoP<tCoste>& G, vertice<tCoste> origen,
   D[origen] = 0;
   P = vector<vertice<tCoste>>(n, origen);
   S[origen] = true;
-  for (std::size_t i = 1; i <= n - 2; i++) {
+  for (std::size_t i = 1; i <= n - 2; ++i) {
     tCoste costeMin = GrafoP<tCoste>::INFINITO;
-    for (v = 0; v < n; v++) {
+    for (v = 0; v < n; ++v) {
       if (!S[v] && D[v] <= costeMin) {
         costeMin = D[v];
         w = v;
@@ -138,14 +138,14 @@ matriz<tCoste> Floyd(const GrafoP<tCoste>& G, matriz<vertice<tCoste>>& P) {
   const std::size_t n = G.numVert();
   matriz<tCoste> A(n);
   P = matriz<vertice<tCoste>>(n);
-  for (vertice<tCoste> i = 0; i < n; i++) {
+  for (vertice<tCoste> i = 0; i < n; ++i) {
     A[i] = G[i];
     A[i][i] = 0;
     P[i] = vector<vertice<tCoste>>(n, i);
   }
-  for (vertice<tCoste> k = 0; k < n; k++) {
-    for (vertice<tCoste> i = 0; i < n; i++) {
-      for (vertice<tCoste> j = 0; j < n; j++) {
+  for (vertice<tCoste> k = 0; k < n; ++k) {
+    for (vertice<tCoste> i = 0; i < n; ++i) {
+      for (vertice<tCoste> j = 0; j < n; ++j) {
         tCoste ikj = suma(A[i][k], A[k][j]);
         if (ikj < A[i][j]) {
           A[i][j] = ikj;
@@ -198,9 +198,9 @@ GrafoP<tCoste> Prim(const GrafoP<tCoste>& G) {
   vector<bool> U(n, false);
   Apo<arista<tCoste>> A(n * (n - 1) / 2 - n + 2);
   U[0] = true;
-  for (vertice<tCoste> v = 1; v < n; v++)
+  for (vertice<tCoste> v = 1; v < n; ++v)
     if (G[0][v] != INFINITO) A.insertar(arista<tCoste>(0, v, G[0][v]));
-  for (std::size_t i = 1; i <= n - 1; i++) {
+  for (std::size_t i = 1; i <= n - 1; ++i) {
     do {
       a = A.cima();
       A.suprimir();
@@ -208,7 +208,7 @@ GrafoP<tCoste> Prim(const GrafoP<tCoste>& G) {
     g[a.orig][a.dest] = g[a.dest][a.orig] = a.coste;
     vertice<tCoste> u = a.dest;
     U[u] = true;
-    for (vertice<tCoste> v = 0; v < n; v++)
+    for (vertice<tCoste> v = 0; v < n; ++v)
       if (!U[v] && G[u][v] != INFINITO)
         A.insertar(arista<tCoste>(u, v, G[u][v]));
   }
@@ -227,8 +227,8 @@ GrafoP<tCoste> Kruskall(const GrafoP<tCoste>& G) {
   GrafoP<tCoste> g(n);
   Particion P(n);
   Apo<arista<tCoste>> A(n * n);
-  for (vertice<tCoste> u = 0; u < n; u++)
-    for (vertice<tCoste> v = u + 1; v < n; v++)
+  for (vertice<tCoste> u = 0; u < n; ++u)
+    for (vertice<tCoste> v = u + 1; v < n; ++v)
       if (G[u][v] != INFINITO) A.insertar(arista<tCoste>(u, v, G[u][v]));
   std::size_t i = 1;
   while (i <= n - 1) {
@@ -256,9 +256,9 @@ matriz<bool> Warshall(const Grafo& G) {
     A[i] = G[i];
     A[i][i] = true;
   }
-  for (vertice k = 0; k < n; k++)
-    for (vertice i = 0; i < n; i++)
-      for (vertice j = 0; j < n; j++)
+  for (vertice k = 0; k < n; ++k)
+    for (vertice i = 0; i < n; ++i)
+      for (vertice j = 0; j < n; ++j)
         if (!A[i][j]) A[i][j] = A[i][k] && A[k][j];
   return A;
 }
@@ -303,7 +303,7 @@ Lista<vertice> Profundidad2(const Grafo& G, vertice u) {
         if (marcas[v] == NO_VISITADO) {
           marcas[v] = VISITADO;
           Lv.insertar(v, Lv.fin());
-          for (vertice w = n; w > 0; w--)
+          for (vertice w = n; w > 0; --w)
             if (G[v][w - 1] && marcas[w - 1] == NO_VISITADO) P.push(w - 1);
         }
       } while (!P.vacia());
@@ -328,7 +328,7 @@ Lista<vertice> Anchura(const Grafo& G, vertice u) {
         if (marcas[v] == NO_VISITADO) {
           marcas[v] = VISITADO;
           Lv.insertar(v, Lv.fin());
-          for (vertice w = n; w > 0; w--)
+          for (vertice w = n; w > 0; --w)
             if (G[v][w - 1] && marcas[w - 1] == NO_VISITADO) C.push(w - 1);
         }
       } while (!C.vacia());

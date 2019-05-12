@@ -53,7 +53,7 @@ std::ostream& operator<<(std::ostream& os, const Grafo& g) {
   using posicion = typename Lista<vertice>::posicion;
   const std::size_t n = g.numVert();
   os << n << " vertices" << std::endl;
-  for (vertice i = 0; i < n; i++)
+  for (vertice i = 0; i < n; ++i)
     if (g.adyacentes(i).primera() != g.adyacentes(i).fin()) {
       os << i << ':';
       for (posicion p = g.adyacentes(i).primera(); p != g.adyacentes(i).fin();

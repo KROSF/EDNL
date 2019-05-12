@@ -6,7 +6,7 @@ namespace grafos {
 class Particion {
  public:
   // Crea una particion de n elementos.
-  Particion(int n) : padre(n, -1) {}
+  explicit Particion(int n) : padre(n, -1) {}
   // Une dos elementos:
   void unir(int a, int b);
   // Busca una particion.
@@ -26,10 +26,10 @@ void Particion::unir(int a, int b) {
 }
 
 int Particion::encontrar(int x) const {
-  int y, raiz = x;
+  int raiz = x;
   while (padre[raiz] > -1) raiz = padre[raiz];
   while (padre[x] > -1) {
-    y = padre[x];
+    int y = padre[x];
     padre[x] = raiz;
     x = y;
   }
