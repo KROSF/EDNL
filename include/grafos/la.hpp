@@ -5,11 +5,11 @@
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 #include "grafos/lista.hpp"
 
-namespace grafos {
-namespace la {
+namespace grafos::la {
 // Grafo no ponderado LA
 class Grafo {
  public:
@@ -18,7 +18,7 @@ class Grafo {
   // Crea un Grafo no ponderado.
   explicit Grafo(std::size_t n) : ady(n) {}
   // Crea un Grafo no ponderado desde un fichero.
-  explicit Grafo(const std::string& path);
+  explicit Grafo(std::string_view path);
   // Devuelve el numero de vertices del grafo.
   std::size_t numVert() const { return ady.size(); }
   // Devuelve un lista de los vertices adyacentes.
@@ -31,11 +31,11 @@ class Grafo {
   std::vector<Lista<vertice>> ady;
 };
 
-Grafo::Grafo(const std::string& path) {
+Grafo::Grafo(std::string_view path) {
   char c;
   std::string cad;
   vertice v, w;
-  std::ifstream file(path);
+  std::ifstream file(path.data());
   unsigned n;
   file >> n;
   ady = std::vector<Lista<vertice>>(n);
@@ -64,6 +64,5 @@ std::ostream& operator<<(std::ostream& os, const Grafo& g) {
   return os;
 }
 
-}  // namespace la
-}  // namespace grafos
+}  // namespace grafos::la
 #endif

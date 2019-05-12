@@ -5,14 +5,14 @@
 #include <limits>
 #include <ostream>
 #include <string>
+#include <string_view>
 #include <vector>
 #include "grafos/lista.hpp"
 #include "grafos/ma.hpp"
 
 using std::vector;
 
-namespace grafos {
-namespace pmc {
+namespace grafos::pmc {
 template <typename T>
 class GrafoP {
  public:
@@ -28,7 +28,7 @@ class GrafoP {
     tCoste coste;
   };
   explicit GrafoP(std::size_t n) : costes(n, vector<tCoste>(n, INFINITO)) {}
-  explicit GrafoP(const std::string& path);
+  explicit GrafoP(std::string_view path);
   GrafoP(const ma::Grafo& g);
   std::size_t numVert() const { return costes.size(); }
   const vector<tCoste>& operator[](vertice v) const { return costes[v]; }
@@ -40,8 +40,8 @@ class GrafoP {
 };
 
 template <typename T>
-GrafoP<T>::GrafoP(const std::string& path) {
-  std::ifstream file(path);
+GrafoP<T>::GrafoP(std::string_view path) {
+  std::ifstream file(path.data());
   unsigned n;
   file >> n;
   costes = vector<vector<T>>(n, vector<T>(n));
@@ -104,6 +104,5 @@ std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
   return os;
 }
 
-}  // namespace pmc
-}  // namespace grafos
+}  // namespace grafos::pmc
 #endif

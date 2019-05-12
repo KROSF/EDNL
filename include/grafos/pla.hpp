@@ -5,11 +5,11 @@
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 #include "grafos/lista.hpp"
 using std::vector;
-namespace grafos {
-namespace pla {
+namespace grafos::pla {
 template <typename T>
 // Grafo ponderado PLA
 class GrafoP {
@@ -31,7 +31,7 @@ class GrafoP {
   // Crea un grafo ponderado PLA
   GrafoP(std::size_t n) : ady(n) {}
   // Crea un grafo ponderado PLA desde fichero.
-  GrafoP(const std::string& path);
+  GrafoP(std::string_view path);
   // Numero de vertices del grafo.
   std::size_t numVert() const { return ady.size(); }
   // Lista de coste del vertice adyacente.
@@ -44,13 +44,13 @@ class GrafoP {
 };
 
 template <typename T>
-GrafoP<T>::GrafoP(const std::string& path) {
+GrafoP<T>::GrafoP(std::string_view path) {
   char c;
   std::string cad;
   vertice v;
   tCoste p;
   vertice_coste vc;
-  std::ifstream file(path);
+  std::ifstream file(path.data());
   unsigned n;
 
   file >> n;
@@ -82,6 +82,5 @@ std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
   return os;
 }
 
-}  // namespace pla
-}  // namespace grafos
+}  // namespace grafos::pla
 #endif

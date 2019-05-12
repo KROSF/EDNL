@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <ostream>
 #include <string>
+#include <string_view>
 #include <vector>
 using std::vector;
 namespace grafos {
@@ -20,7 +21,7 @@ class Grafo {
   // Crea un Grafo no ponderado MA
   explicit Grafo(std::size_t n) : ady(n, vector<bool>(n, false)) {}
   // Crea un grafo desde un fichero
-  explicit Grafo(const std::string& path);
+  explicit Grafo(std::string_view path);
   template <typename T>
   // Copia un grado ponderado a grafo MA
   Grafo(const pmc::GrafoP<T>& G) : ady(G.numVert(), vector<bool>(G.numVert())) {
@@ -41,11 +42,11 @@ class Grafo {
   vector<vector<bool>> ady;
 };
 
-Grafo::Grafo(const std::string& path) {
+Grafo::Grafo(std::string_view path) {
   char c;
   std::string cad;
   vertice v, w;
-  std::ifstream file(path);
+  std::ifstream file(path.data());
   unsigned n;
 
   file >> n;

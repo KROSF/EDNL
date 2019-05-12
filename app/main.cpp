@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,7 +15,8 @@ int main(void) {
   std::string path("files/grafopmc.txt");
   GrafoP<int> G(path);
   cout << GrafoP<int>::INFINITO << endl;
-  vector<GrafoP<int>::vertice> vertices(G.numVert());
-  // cout << alg::Dijkstra(G, 2, vertices) << endl;
+  vector<alg::vertice<int>> vertices(G.numVert());
+  // auto r = std::max_element(vertices.begin(), vertices.end());
+  cout << alg::Dijkstra(G, 2, vertices) << endl;
   cout << G << endl;
 }
