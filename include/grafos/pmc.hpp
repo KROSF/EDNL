@@ -83,19 +83,20 @@ bool GrafoP<T>::esDirigido() const {
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
   using vertice = typename GrafoP<T>::vertice;
-  const size_t n = g.numVert();
-  os << n << " vertices" << std::endl;
-  os << "    ";
-  for (vertice j = 0; j < n; j++) os << std::setw(4) << j;
-  os << std::endl;
+  const std::size_t n = g.numVert();
+  std::size_t elto_long = std::to_string(GrafoP<T>::INFINITO).size();
+  os << "\033[1m\033[31m" << n << " vertices\n\033[32m ";
+  for (vertice j = 0; j < n; j++) {
+    os << std::setw(elto_long) << j;
+  }
+  os << "\033[00m\n";
   for (vertice i = 0; i < n; i++) {
-    os << std::setw(4) << i;
+    os << "\033[1m\033[32m" << i << "\033[00m" << std::setw(elto_long);
     for (vertice j = 0; j < n; j++) {
-      os << std::setw(4);
       if (g[i][j] == GrafoP<T>::INFINITO) {
-        os << "-";
+        os << std::setw(elto_long + 16) << "\033[1m\033[34m\u221E\033[00m";
       } else {
-        os << g[i][j];
+        os << std::setw(elto_long) << g[i][j];
       }
     }
     os << std::endl;
