@@ -24,7 +24,8 @@ class Grafo {
   explicit Grafo(std::string_view path);
   template <typename T>
   // Copia un grado ponderado a grafo MA
-  Grafo(const pmc::GrafoP<T>& G) : ady(G.numVert(), vector<bool>(G.numVert())) {
+  explicit Grafo(const pmc::GrafoP<T>& G)
+      : ady(G.numVert(), vector<bool>(G.numVert())) {
     const size_t n = G.numVert();
     for (vertice i = 0; i < n; ++i)
       for (vertice j = 0; j < n; ++j)

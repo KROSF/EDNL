@@ -1,9 +1,10 @@
 #ifndef ABB_HPP
 #define ABB_HPP
-#include "abin.hpp"
 #include <cassert>
-template <typename T> class Abb {
-public:
+#include "abin.hpp"
+template <typename T>
+class Abb {
+ public:
   Abb() : raiz{nullptr} {}
   Abb(const Enlazada::Abin<T> &a) : raiz{nullptr} { copiar(a, a.raizB()); }
   const Abb &buscar(const T &e) const;
@@ -19,11 +20,11 @@ public:
   Abb &operator=(const Abb &a);
   ~Abb();
 
-private:
+ private:
   struct Nodo {
     T elto;
     Abb izq, dch;
-    Nodo(const T &e) : elto{e} {}
+    explicit Nodo(const T &e) : elto{e} {}
   };
   Nodo *raiz;
   T borrarMin();
@@ -32,7 +33,8 @@ private:
   void copiarAbb(Enlazada::Abin<T> &, typename Enlazada::Abin<T>::Nodo n) const;
 };
 
-template <typename T> const Abb<T> &Abb<T>::buscar(const T &e) const {
+template <typename T>
+const Abb<T> &Abb<T>::buscar(const T &e) const {
   if (raiz == nullptr) {
     return *this;
   } else if (e < raiz->elto) {
@@ -44,7 +46,8 @@ template <typename T> const Abb<T> &Abb<T>::buscar(const T &e) const {
   }
 }
 
-template <typename T> void Abb<T>::insertar(const T &e) {
+template <typename T>
+void Abb<T>::insertar(const T &e) {
   if (raiz == nullptr)
     raiz = new Nodo(e);
   else if (e < raiz->elto)
@@ -53,7 +56,8 @@ template <typename T> void Abb<T>::insertar(const T &e) {
     raiz->dch.insertar(e);
 }
 
-template <typename T> void Abb<T>::eliminar(const T &e) {
+template <typename T>
+void Abb<T>::eliminar(const T &e) {
   if (raiz != nullptr) {
     if (e < raiz->elto) {
       raiz->izq.eliminar(e);
@@ -78,7 +82,8 @@ template <typename T> void Abb<T>::eliminar(const T &e) {
   }
 }
 
-template <typename T> T Abb<T>::borrarMin() {
+template <typename T>
+T Abb<T>::borrarMin() {
   if (raiz->izq.raiz == nullptr) {
     T e = raiz->elto;
     Nodo *hd{raiz->dch.raiz};
@@ -91,26 +96,31 @@ template <typename T> T Abb<T>::borrarMin() {
   }
 }
 
-template <typename T> inline const T &Abb<T>::elemento() const {
+template <typename T>
+inline const T &Abb<T>::elemento() const {
   assert(raiz != nullptr);
   return raiz->elto;
 }
 
-template <typename T> inline const Abb<T> &Abb<T>::izquierdo() const {
+template <typename T>
+inline const Abb<T> &Abb<T>::izquierdo() const {
   assert(raiz != nullptr);
   return raiz->izq;
 }
 
-template <typename T> inline const Abb<T> &Abb<T>::derecho() const {
+template <typename T>
+inline const Abb<T> &Abb<T>::derecho() const {
   assert(raiz != nullptr);
   return raiz->dch;
 }
 
-template <typename T> inline Abb<T>::Abb(const Abb<T> &a) : raiz{nullptr} {
+template <typename T>
+inline Abb<T>::Abb(const Abb<T> &a) : raiz{nullptr} {
   copiar(a);
 }
 
-template <typename T> Abb<T> &Abb<T>::operator=(const Abb<T> &a) {
+template <typename T>
+Abb<T> &Abb<T>::operator=(const Abb<T> &a) {
   if (this != &a) {
     this->~Abb();
     copiar(a);
@@ -118,14 +128,16 @@ template <typename T> Abb<T> &Abb<T>::operator=(const Abb<T> &a) {
   return *this;
 }
 
-template <typename T> Abb<T>::~Abb() {
+template <typename T>
+Abb<T>::~Abb() {
   if (raiz != nullptr) {
     delete raiz;
     raiz = nullptr;
   }
 }
 
-template <typename T> void Abb<T>::copiar(const Abb<T> &a) {
+template <typename T>
+void Abb<T>::copiar(const Abb<T> &a) {
   if (a.raiz != nullptr) {
     raiz = new Nodo(a.raiz->elto);
     raiz->izq.copiar(a.raiz->izq);
@@ -145,7 +157,7 @@ void Abb<T>::copiar(const Enlazada::Abin<T> &a,
 
 template <typename T>
 void Abb<T>::copiarAbb(Enlazada::Abin<T> &abin,
-                    typename Enlazada::Abin<T>::Nodo n) const {
+                       typename Enlazada::Abin<T>::Nodo n) const {
   if (!raiz->izq.vacio()) {
     abin.insertarHijoIzqdoB(n, raiz->izq.elemento());
     raiz->izq.copiarAbb(abin, abin.hijoIzqdoB(n));
@@ -156,7 +168,8 @@ void Abb<T>::copiarAbb(Enlazada::Abin<T> &abin,
   }
 }
 
-template <typename T> void Abb<T>::podar(const T &e) {
+template <typename T>
+void Abb<T>::podar(const T &e) {
   if (!vacio()) {
     if (e > raiz->elto) {
       raiz->dch.podar(e);
@@ -168,7 +181,8 @@ template <typename T> void Abb<T>::podar(const T &e) {
   }
 }
 
-template <typename T> Abb<T>::operator Enlazada::Abin<T>() const {
+template <typename T>
+Abb<T>::operator Enlazada::Abin<T>() const {
   Enlazada::Abin<T> abin;
   if (!vacio()) {
     abin.insertarRaizB(elemento());

@@ -70,7 +70,7 @@ std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
   using posicion = typename Lista<typename GrafoP<T>::vertice_coste>::posicion;
   const size_t n = g.numVert();
   os << n << " vertices" << std::endl;
-  for (vertice i = 0; i < n; i++)
+  for (vertice i = 0; i < n; ++i)
     if (g.adyacentes(i).primera() != g.adyacentes(i).fin()) {
       os << i << ':';
       for (posicion p = g.adyacentes(i).primera(); p != g.adyacentes(i).fin();

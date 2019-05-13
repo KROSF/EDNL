@@ -137,19 +137,51 @@ template <typename tCoste>
 matriz<tCoste> Floyd(const GrafoP<tCoste>& G, matriz<vertice<tCoste>>& P) {
   const std::size_t n = G.numVert();
   matriz<tCoste> A(n);
-  P = matriz<vertice<tCoste>>(n);
+  P = matriz<vertice<tCoste>>(n, -1);
   for (vertice<tCoste> i = 0; i < n; ++i) {
     A[i] = G[i];
     A[i][i] = 0;
-    P[i] = vector<vertice<tCoste>>(n, i);
+    for (vertice<tCoste> j = 0; j < n; ++j) {
+      if (G[i][j] != GrafoP<tCoste>::INFINITO) {
+        P[i][j] = i;
+      }
+    }
+  }
+
+  for (vertice<tCoste> k = 0; k < n; ++k) {
+    for (vertice<tCoste> i = 0; i < n; ++i) {
+      for (vertice<tCoste> j = 0; j < n; ++j) {
+        if (tCoste ikj = suma(A[i][k], A[k][j]); ikj < A[i][j]) {
+          A[i][j] = ikj;
+          P[i][j] = P[k][j];
+        }
+      }
+    }
+  }
+  return A;
+}
+
+template <typename tCoste>
+matriz<tCoste> FloydMax(const GrafoP<tCoste>& G, matriz<vertice<tCoste>>& P) {
+  const std::size_t n = G.numVert();
+  matriz<tCoste> A(n);
+  P = matriz<vertice<tCoste>>(n, -1);
+  for (vertice<tCoste> i = 0; i < n; ++i) {
+    A[i] = G[i];
+    A[i][i] = 0;
+    for (vertice<tCoste> j = 0; j < n; ++j) {
+      if (G[i][j] != GrafoP<tCoste>::INFINITO) {
+        P[i][j] = i;
+      }
+    }
   }
   for (vertice<tCoste> k = 0; k < n; ++k) {
     for (vertice<tCoste> i = 0; i < n; ++i) {
       for (vertice<tCoste> j = 0; j < n; ++j) {
-        tCoste ikj = suma(A[i][k], A[k][j]);
-        if (ikj < A[i][j]) {
+        if (tCoste ikj = suma(A[i][k], A[k][j]);
+            ikj != GrafoP<tCoste>::INFINITO && ikj > A[i][j]) {
           A[i][j] = ikj;
-          P[i][j] = k;
+          P[i][j] = P[k][j];
         }
       }
     }
@@ -252,7 +284,7 @@ enum visitas { NO_VISITADO, VISITADO };
 matriz<bool> Warshall(const Grafo& G) {
   const std::size_t n = G.numVert();
   matriz<bool> A(n);
-  for (vertice i = 0; i < n; i++) {
+  for (vertice i = 0; i < n; ++i) {
     A[i] = G[i];
     A[i][i] = true;
   }
@@ -270,7 +302,7 @@ static Lista<vertice> Profun(const Grafo& G, vertice v,
 
   marcas[v] = VISITADO;
   Lv.insertar(v, Lv.fin());
-  for (vertice w = 0; w < n; w++)
+  for (vertice w = 0; w < n; ++w)
     if (G[v][w] && marcas[w] == NO_VISITADO) Lv += Profun(G, w, marcas);
   return Lv;
 }

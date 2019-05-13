@@ -9,7 +9,7 @@ using std::endl;
 using std::vector;
 
 int main(void) {
-  GrafoP<int> G("files/grafos/dirigido.txt");
+  GrafoP<int> G("files/grafos/dirigido3.txt");
   cout << std::boolalpha << esAciclico(G) << endl;
   matriz<alg::vertice<int>> P;
   matriz<int> F{alg::Floyd(G, P)};

@@ -29,7 +29,7 @@ class GrafoP {
   };
   explicit GrafoP(std::size_t n) : costes(n, vector<tCoste>(n, INFINITO)) {}
   explicit GrafoP(std::string_view path);
-  GrafoP(const ma::Grafo& g);
+  explicit GrafoP(const ma::Grafo& g);
   std::size_t numVert() const { return costes.size(); }
   const vector<tCoste>& operator[](vertice v) const { return costes[v]; }
   vector<tCoste>& operator[](vertice v) { return costes[v]; }

@@ -1,9 +1,10 @@
 #ifndef APO_HPP
 #define APO_HPP
 #include <cassert>
-template <typename T> class Apo {
-public:
-  Apo(int maxi) : max{maxi}, nodos{new T[max]}, ultimo{-1} {}
+template <typename T>
+class Apo {
+ public:
+  explicit Apo(int maxi) : max{maxi}, nodos{new T[max]}, ultimo{-1} {}
 
   Apo(const Apo<T> &a) : max{a.max}, nodos{new T[max]}, ultimo{a.ultimo} {
     for (Nodo = 0; n <= ultimo; ++n) {
@@ -53,7 +54,7 @@ public:
   bool vacio() const { return ultimo == -1; }
   ~Apo() { delete[] nodos; }
 
-private:
+ private:
   using Nodo = int;
   int max;
   T *nodos;

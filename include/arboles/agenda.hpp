@@ -5,7 +5,7 @@
 
 class Contacto {
  public:
-  Contacto(std::string nom, unsigned num) : nombre{nom}, numero{num} {}
+  Contacto(const std::string &nom, unsigned num) : nombre{nom}, numero{num} {}
   std::string nombre;
   unsigned numero;
 };
