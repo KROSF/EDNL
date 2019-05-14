@@ -35,7 +35,6 @@ TEST_F(Practica_6, ejercicio_3_Aciclico_false) {
 
 TEST_F(Practica_6, ejercicio_4_Zuelandia) {
   GrafoP<unsigned> G("files/grafos/zuelandia.txt");
-  unsigned l = GrafoP<unsigned>::INFINITO;
   vector<unsigned> ciudades{1, 2, 3, 4, 5, 6};
   vector<alg::arista<unsigned>> caminos{alg::arista<unsigned>(0, 0, 0)};
   matriz<unsigned> mcz = Zuelandia(G, ciudades, caminos, 3);

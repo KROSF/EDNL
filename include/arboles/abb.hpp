@@ -6,7 +6,9 @@ template <typename T>
 class Abb {
  public:
   Abb() : raiz{nullptr} {}
-  Abb(const Enlazada::Abin<T> &a) : raiz{nullptr} { copiar(a, a.raizB()); }
+  explicit Abb(const Enlazada::Abin<T> &a) : raiz{nullptr} {
+    copiar(a, a.raizB());
+  }
   const Abb &buscar(const T &e) const;
   void insertar(const T &e);
   void eliminar(const T &e);
