@@ -81,8 +81,8 @@ vector<tCoste> DijkstraInv(const GrafoP<tCoste>& G, vertice<tCoste> destino,
                            vector<vertice<tCoste>>& P) {
   vertice<tCoste> v, w;
   const std::size_t n = G.numVert();
-  vector<bool> S(n, false);
   vector<tCoste> D(n);
+  vector<bool> S(n, false);
   for (vertice<tCoste> i = 0; i < n; ++i) {
     D[i] = G[i][destino];
   }
@@ -100,8 +100,7 @@ vector<tCoste> DijkstraInv(const GrafoP<tCoste>& G, vertice<tCoste> destino,
     S[w] = true;
     for (v = 0; v < n - 1; ++v) {
       if (!S[v]) {
-        tCoste coste = suma(G[v][w], D[w]);
-        if (coste < D[v]) {
+        if (tCoste coste = suma(G[v][w], D[w]); coste < D[v]) {
           D[v] = coste;
           P[v] = w;
         }

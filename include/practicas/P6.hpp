@@ -23,13 +23,15 @@ std::tuple<size_t, size_t> diametro(const GrafoP<tCoste>& G) {
   vector<size_t> diam(n, 0);
   for (size_t i = 0, max = 0, max2 = 0; i < n; ++i, max = max2 = 0) {
     for (size_t j = 0; j < n; ++j) {
-      if (static_cast<size_t>(F[i][j]) > max && max <= max2) {
-        max = F[i][j];
-      } else if (static_cast<size_t>(F[i][j]) > max2) {
-        max2 = F[i][j];
+      if (F[i][j] != GrafoP<tCoste>::INFINITO) {
+        if (static_cast<size_t>(F[i][j]) > max && max <= max2) {
+          max = F[i][j];
+        } else if (static_cast<size_t>(F[i][j]) > max2) {
+          max2 = F[i][j];
+        }
       }
     }
-    diam.push_back(max + max2);
+    diam[i] = max + max2;
   }
   auto v = std::min_element(diam.begin(), diam.end());
   return {std::distance(diam.begin(), v), *v};

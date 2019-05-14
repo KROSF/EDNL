@@ -22,8 +22,10 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/tests
-    ${PROJECT_SOURCE_DIR}/external/googletest
-    ${PROJECT_SOURCE_DIR}/external/googletest/include)
+    ${PROJECT_SOURCE_DIR}/external/googletest/googlemock
+    ${PROJECT_SOURCE_DIR}/external/googletest/googlemock/include
+    ${PROJECT_SOURCE_DIR}/external/googletest/googletest
+    ${PROJECT_SOURCE_DIR}/external/googletest/googletest/include)
 
 file(GLOB SOURCES "src/*.cpp")
 file(GLOB TESTFILES "tests/*.cpp")
@@ -45,8 +47,8 @@ target_link_libraries(dijkstra.x engine)
 #                         Make Tests
 # --------------------------------------------------------------------------------
 add_executable(${TEST_MAIN} ${TESTFILES})
-add_dependencies(${TEST_MAIN} googletest engine)
-target_link_libraries(${TEST_MAIN} googletest engine pthread)
+add_dependencies(${TEST_MAIN} googletest googlemock engine)
+target_link_libraries(${TEST_MAIN} googletest googlemock engine pthread)
 add_custom_target(gtest 
     COMMAND "${PROJECT_BINARY_DIR}/${TEST_MAIN}"
     DEPENDS engine ${TEST_MAIN})
@@ -69,10 +71,15 @@ add_custom_target( git_update
 add_library( googletest
     ${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest-all.cc
     ${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest_main.cc )
+add_library( googlemock
+    ${PROJECT_SOURCE_DIR}/external/googletest/googlemock/src/gmock-all.cc
+    ${PROJECT_SOURCE_DIR}/external/googletest/googlemock/src/gmock_main.cc )
 add_dependencies(googletest git_update)
+add_dependencies(googlemock git_update)
 set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest-all.cc  PROPERTIES GENERATED 1)
 set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest_main.cc PROPERTIES GENERATED 1)
-
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/googlemock/src/gmock-all.cc  PROPERTIES GENERATED 1)
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/googlemock/src/gmock_main.cc PROPERTIES GENERATED 1)
 # --------------------------------------------------------------------------------
 #                            Misc
 # --------------------------------------------------------------------------------
