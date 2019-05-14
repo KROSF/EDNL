@@ -2,24 +2,24 @@
 
 ## Content
 
-- Trees
-    - Binary Tree ([Abin](include/arboles/abin.hpp))
-    - Binary Search Tree ([Abb](include/arboles/abb.hpp))
-    - Partially Ordered Tree ([APO](include/arboles/apo.hpp))
-    - General Tree ([Agen](include/arboles/agen.hpp))
-- Graphs
-    - Graph Adjacency List ([LA](include/grafos/la.hpp))
-    - Adjacency Matrix Graph ([MA](include/grafos/ma.hpp))
-    - Weighted Graph Adjacency Matrix ([PMC](include/grafos/pmc.hpp))
-    - Weighted Graph Adjacency List ([PLA](include/grafos/pla.hpp))
-    - Graphs Useful Algorithms ([ALG](include/grafos/alg.hpp))
-    - Graphs I/O Fuctions ([IO](include/grafos/io.hpp))
-    - Other Data Structures
-        - Queue ([Cola](include/grafos/cola.hpp))
-        - Single Linked List ([Lista](include/grafos/lista.hpp))
-        - Partition ([Particion](include/grafos/particion.hpp))
-        - Matrix ([Matriz](include/grafos/matriz.hpp))
-        - Stack ([Pila](include(grafos/pila.hpp)))
+-   Trees
+    -   Binary Tree ([Abin](include/arboles/abin.hpp))
+    -   Binary Search Tree ([Abb](include/arboles/abb.hpp))
+    -   Partially Ordered Tree ([APO](include/arboles/apo.hpp))
+    -   General Tree ([Agen](include/arboles/agen.hpp))
+-   Graphs
+    -   Graph Adjacency List ([LA](include/grafos/la.hpp))
+    -   Adjacency Matrix Graph ([MA](include/grafos/ma.hpp))
+    -   Weighted Graph Adjacency Matrix ([PMC](include/grafos/pmc.hpp))
+    -   Weighted Graph Adjacency List ([PLA](include/grafos/pla.hpp))
+    -   Graphs Useful Algorithms ([ALG](include/grafos/alg.hpp))
+    -   Graphs I/O Fuctions ([IO](include/grafos/io.hpp))
+    -   Other Data Structures
+        -   Queue ([Cola](include/grafos/cola.hpp))
+        -   Single Linked List ([Lista](include/grafos/lista.hpp))
+        -   Partition ([Particion](include/grafos/particion.hpp))
+        -   Matrix ([Matriz](include/grafos/matriz.hpp))
+        -   Stack ([Pila](include(grafos/pila.hpp)))
 
 ## Related
 
