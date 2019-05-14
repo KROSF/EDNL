@@ -6,7 +6,7 @@ using namespace Enlazada;
 class Practica_3 : public ::testing::Test {
  protected:
   void SetUp() override {
-    std::ifstream is("files/agen.txt", std::ifstream::binary);
+    std::ifstream is("files/arboles/agen.txt", std::ifstream::binary);
     is >> A_;
     is.close();
   }
@@ -37,7 +37,7 @@ TEST_F(Practica_3, ejercicio_3_longestpath_raiz) {
 
 TEST_F(Practica_3, ejercicio_4_poda) {
   Agen<int> agen;
-  std::ifstream is("files/agen_int.txt", std::ifstream::binary);
+  std::ifstream is("files/arboles/agen_int.txt", std::ifstream::binary);
   is >> agen;
   is.close();
   poda(agen, 2);

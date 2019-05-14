@@ -9,8 +9,8 @@ class Practica_4 : public ::testing::Test {
 
  protected:
   void SetUp() override {
-    std::ifstream isa("files/abin.txt", std::ifstream::binary);
-    std::ifstream isb("files/abb.txt", std::ifstream::binary);
+    std::ifstream isa("files/arboles/abin.txt", std::ifstream::binary);
+    std::ifstream isb("files/arboles/abb.txt", std::ifstream::binary);
     isa >> A;
     isb >> B;
     isb.close();
@@ -25,7 +25,7 @@ class Practica_4 : public ::testing::Test {
 
 TEST_F(Practica_4, ejercicio_1_poda) {
   Enlazada::Abin<int> aint;
-  std::ifstream isa("files/abb_poda.txt", std::ifstream::binary);
+  std::ifstream isa("files/arboles/abb_poda.txt", std::ifstream::binary);
   isa >> aint;
   Abb<int> abbint{aint};
   abbint.podar(9);

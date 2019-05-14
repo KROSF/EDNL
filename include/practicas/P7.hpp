@@ -55,6 +55,6 @@ std::tuple<tCoste, tCamino<tCoste>> Laberinto(
 
 template <typename tCoste>
 void Distribucion(vertice<tCoste> centro, size_t cantidad,
-                  const matriz<tCoste>& costes, const vector<tCoste>& capacidad,
+                  const GrafoP<tCoste>& costes, const vector<tCoste>& capacidad,
                   const vector<tCoste>& subvencion) {}
 #endif

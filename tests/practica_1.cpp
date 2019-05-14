@@ -9,7 +9,7 @@ using namespace Enlazada;
 class Practica_1 : public ::testing::Test {
  protected:
   void SetUp() override {
-    std::ifstream is("files/abin.txt", std::ifstream::binary);
+    std::ifstream is("files/arboles/abin.txt", std::ifstream::binary);
     is >> A_;
     is.close();
   }
@@ -45,7 +45,7 @@ TEST_F(Practica_1, ejercicio_7_pseudocompleto_false_empty) {
 
 TEST_F(Practica_1, ejercicio_7_pseudocompleto_true) {
   Abin<char> P_;
-  std::ifstream is("files/pseudocmp.txt", std::ifstream::binary);
+  std::ifstream is("files/arboles/pseudocmp.txt", std::ifstream::binary);
   is >> P_;
   is.close();
   EXPECT_TRUE(isFullTree(P_));
@@ -53,7 +53,7 @@ TEST_F(Practica_1, ejercicio_7_pseudocompleto_true) {
 
 TEST_F(Practica_1, ejercicio_7_pseudocompleto_true_2) {
   Abin<char> P_;
-  std::ifstream is("files/complete.txt", std::ifstream::binary);
+  std::ifstream is("files/arboles/complete.txt", std::ifstream::binary);
   is >> P_;
   is.close();
   EXPECT_TRUE(isFullTree(P_));
@@ -61,7 +61,7 @@ TEST_F(Practica_1, ejercicio_7_pseudocompleto_true_2) {
 
 TEST_F(Practica_1, ejercicio_7_pseudocompleto_true_3) {
   Abin<Op> P_;
-  std::ifstream is("files/op.txt", std::ifstream::binary);
+  std::ifstream is("files/arboles/op.txt", std::ifstream::binary);
   is >> P_;
   is.close();
   EXPECT_TRUE(isFullTree(P_));

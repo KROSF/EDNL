@@ -80,8 +80,10 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/include/configversion.h.in"
   "${PROJECT_BINARY_DIR}/configversion.h")
 
-file(GLOB FILES "${PROJECT_SOURCE_DIR}/files/*.txt")
-file(COPY ${FILES} DESTINATION "${PROJECT_BINARY_DIR}/files/")
+file(GLOB FILES "${PROJECT_SOURCE_DIR}/files/arboles/*.txt")
+file(COPY ${FILES} DESTINATION "${PROJECT_BINARY_DIR}/files/arboles/")
+file(GLOB FILES "${PROJECT_SOURCE_DIR}/files/grafos/*.txt")
+file(COPY ${FILES} DESTINATION "${PROJECT_BINARY_DIR}/files/grafos/")
 
 include_directories("${PROJECT_BINARY_DIR}")
 set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )

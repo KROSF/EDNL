@@ -10,8 +10,8 @@ using namespace Enlazada;
 class Practica_2 : public ::testing::Test {
  protected:
   void SetUp() override {
-    std::ifstream isA("files/abin.txt", std::ifstream::binary);
-    std::ifstream isB("files/pseudocmp.txt", std::ifstream::binary);
+    std::ifstream isA("files/arboles/abin.txt", std::ifstream::binary);
+    std::ifstream isB("files/arboles/pseudocmp.txt", std::ifstream::binary);
     isA >> A_;
     isB >> B_;
     isA.close();
@@ -71,7 +71,7 @@ TEST_F(Practica_2, operacion_ostream_operador) {
 
 TEST_F(Practica_2, ejercico_3_operacion_arimetica) {
   Abin<Op> OP;
-  std::ifstream is("files/op.txt", std::ifstream::binary);
+  std::ifstream is("files/arboles/op.txt", std::ifstream::binary);
   is >> OP;
   is.close();
   EXPECT_DOUBLE_EQ(178, operacion(OP));
