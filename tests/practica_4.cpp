@@ -15,8 +15,8 @@ class Practica_4 : public ::testing::Test {
     isb >> B;
     isb.close();
     isa.close();
-    a = A;
-    b = B;
+    a = Abb<char>(A);
+    b = Abb<char>(B);
     equilibrar(b);
     equilibrar(a);
   }
