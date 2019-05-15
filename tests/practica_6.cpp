@@ -20,9 +20,8 @@ TEST_F(Practica_6, ejercicio_1_Dijkstra) {
 TEST_F(Practica_6, ejercicio_1_DijkstraInv) {
   GrafoP<unsigned> G("files/grafos/dijkstrainv.txt");
   vector<unsigned> Dinv = alg::DijkstraInv(G, 2, P);
-  ASSERT_THAT(Dinv,
-              ElementsAre(7, 5, 0, 7, 2, 3, 1, GrafoP<unsigned>::INFINITO));
-  ASSERT_THAT(P, ElementsAre(1, 2, 2, 1, 2, 6, 2, 2));
+  ASSERT_THAT(Dinv, ElementsAre(7, 5, 0, 7, 2, 3, 1, 8));
+  ASSERT_THAT(P, ElementsAre(1, 2, 2, 1, 2, 6, 2, 4));
 }
 
 TEST_F(Practica_6, DISABLED_ejercicio_2_pseudocentro) {

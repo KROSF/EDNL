@@ -67,12 +67,11 @@ std::ostream& operator<<(std::ostream& os, const matriz<bool>& m) {
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream&, const Lista<T>&);
-
-std::ostream& operator<<(std::ostream& os, const Lista<std::size_t>& L) {
-  using posicion = Lista<std::size_t>::posicion;
-  for (posicion i = L.primera(); i != L.fin(); i = L.siguiente(i))
-    os << L.elemento(i) << ' ';
+std::ostream& operator<<(std::ostream& os, const Lista<T>& L) {
+  auto au = L.anterior(L.fin());
+  for (auto i = L.primera(); i != au; i = L.siguiente(i))
+    os << L.elemento(i) << " \033[1m\033[34m\u2192\033[00m ";
+  os << L.elemento(au);
   return os;
 }
 }  // namespace grafos

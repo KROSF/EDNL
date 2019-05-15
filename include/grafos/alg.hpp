@@ -91,14 +91,14 @@ vector<tCoste> DijkstraInv(const GrafoP<tCoste>& G, vertice<tCoste> destino,
   P = vector<vertice<tCoste>>(n, destino);
   for (size_t i = 1; i < n - 2; ++i) {
     tCoste min = GrafoP<tCoste>::INFINITO;
-    for (v = 0; v < n - 1; ++v) {
+    for (v = 0; v < n; ++v) {
       if (!S[v] && min >= D[v]) {
         min = D[v];
         w = v;
       }
     }
     S[w] = true;
-    for (v = 0; v < n - 1; ++v) {
+    for (v = 0; v < n; ++v) {
       if (!S[v]) {
         if (tCoste coste = suma(G[v][w], D[w]); coste < D[v]) {
           D[v] = coste;
@@ -115,13 +115,23 @@ template <typename T>
  * Devuelve el camino de coste mínimo entre los vértices orig  y v
  * a partir de un vector P obtenido mediante la función Dijkstra().
  */
-tCamino<T> camino(vertice<T> orig, vertice<T> v, const vector<vertice<T>>& P) {
+tCamino<T> camino(vertice<T> orig, vertice<T> v, const vector<vertice<T>>& P,
+                  bool inv = false) {
   tCamino<T> C;
-  C.insertar(v, C.primera());
-  do {
-    C.insertar(P[v], C.primera());
-    v = P[v];
-  } while (v != orig);
+  if (inv) {
+    std::swap(orig, v);
+    C.insertar(v, C.fin());
+    do {
+      C.insertar(P[v], C.fin());
+      v = P[v];
+    } while (v != orig);
+  } else {
+    C.insertar(v, C.primera());
+    do {
+      C.insertar(P[v], C.primera());
+      v = P[v];
+    } while (v != orig);
+  }
   return C;
 }
 

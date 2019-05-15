@@ -43,6 +43,10 @@ add_executable(dijkstra.x app/dijkstra.cpp)
 add_dependencies(dijkstra.x engine)
 target_link_libraries(dijkstra.x engine)
 
+add_executable(feat.x app/feat.cpp)
+add_dependencies(feat.x engine)
+target_link_libraries(feat.x engine)
+
 # --------------------------------------------------------------------------------
 #                         Make Tests
 # --------------------------------------------------------------------------------
