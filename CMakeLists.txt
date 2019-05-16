@@ -47,6 +47,10 @@ add_executable(feat.x app/feat.cpp)
 add_dependencies(feat.x engine)
 target_link_libraries(feat.x engine)
 
+add_executable(diam_center.x app/diam_center.cpp)
+add_dependencies(diam_center.x engine)
+target_link_libraries(diam_center.x engine)
+
 # --------------------------------------------------------------------------------
 #                         Make Tests
 # --------------------------------------------------------------------------------

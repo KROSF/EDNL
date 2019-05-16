@@ -1,13 +1,12 @@
 #include <iostream>
-#include "grafos/alg.hpp"
 #include "grafos/io.hpp"
+#include "practicas/P6.hpp"
 using namespace grafos::pmc;
 using std::vector;
-int main(void) {
-  vector<alg::vertice<unsigned>> P;
-  GrafoP<unsigned> G("files/grafos/dijkstrainv.txt");
-  vector<unsigned> Dinv = alg::DijkstraInv(G, 0, P);
-  for (size_t i = 0; i < G.numVert(); ++i)
-    std::cout << i << " Coste(" << Dinv[i]
-              << "): " << alg::camino<unsigned>(i, 0, P, true) << std::endl;
+int main(int argc, char **argv) {
+  GrafoP<unsigned> G(argv[1]);
+  matriz<vertice<unsigned>> P;
+  matriz<unsigned> F{alg::Floyd(G, P)};
+  std::cout << G << std::endl;
+  std::cout << F << std::endl;
 }

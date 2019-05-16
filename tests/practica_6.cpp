@@ -24,12 +24,12 @@ TEST_F(Practica_6, ejercicio_1_DijkstraInv) {
   ASSERT_THAT(P, ElementsAre(1, 2, 2, 1, 2, 6, 2, 4));
 }
 
-TEST_F(Practica_6, DISABLED_ejercicio_2_pseudocentro) {
+TEST_F(Practica_6, ejercicio_2_pseudocentro) {
   GrafoP<unsigned> G("files/grafos/conexo.txt");
   EXPECT_EQ(0U, PseudoCentro(G));
 }
 
-TEST_F(Practica_6, DISABLED_ejercicio_2_diametro) {
+TEST_F(Practica_6, ejercicio_2_diametro) {
   GrafoP<unsigned> G("files/grafos/conexo.txt");
   EXPECT_EQ(18U, Diametro(G));
 }
