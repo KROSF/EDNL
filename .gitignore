@@ -42,3 +42,4 @@ graphs/
 **/*.ps
 
 **/*DS_Store
+**/._*
