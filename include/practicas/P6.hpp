@@ -5,7 +5,6 @@
 #include "grafos/alg.hpp"
 
 using grafos::matriz;
-using grafos::ma::Grafo;
 using grafos::pmc::GrafoP;
 using grafos::pmc::alg::arista;
 using grafos::pmc::alg::Dijkstra;
@@ -20,7 +19,7 @@ template <typename tCoste>
 std::tuple<std::tuple<tCoste, tCoste>, std::tuple<tCoste, tCoste>>
 TwoHighestValues(const vector<tCoste>& row,
                  tCoste ignore = GrafoP<tCoste>::INFINITO) {
-  std::tuple<tCoste, tCoste> actual{0, 0}, anterior{0, 0};
+  std::tuple<tCoste, tCoste> actual{ignore, 0}, anterior{ignore, 0};
   for (tCoste i = 0; i < row.size(); ++i) {
     if (row[i] != ignore) {
       if (std::get<1>(actual) < row[i]) {
@@ -32,33 +31,38 @@ TwoHighestValues(const vector<tCoste>& row,
       }
     }
   }
-  if (anterior < actual) {
-    std::swap(anterior, actual);
-  }
   return {actual, anterior};
+}
+
+template <typename T>
+std::tuple<T, T> pseudoCentroDiametro(const GrafoP<T>& G) {
+  matriz<vertice<T>> P;
+  matriz<T> F{Floyd(G, P)};
+  size_t n{F.dimension()};
+  vector<size_t> diam(n, 0);
+  for (size_t i = 0; i < n; ++i) {
+    const auto& [max_a, max_b] = TwoHighestValues<T>(F[i]);
+    if (std::get<0>(max_b) == GrafoP<T>::INFINITO ||
+        std::get<0>(max_a) == GrafoP<T>::INFINITO) {
+      diam[i] = GrafoP<T>::INFINITO;
+    } else {
+      diam[i] = std::get<1>(max_a) + std::get<1>(max_b);
+    }
+  }
+  auto nodo = std::min_element(diam.begin(), diam.end());
+  return {std::distance(diam.begin(), nodo), *nodo};
 }
 
 template <typename tCoste>
 size_t PseudoCentro(const GrafoP<tCoste>& G) {
-  matriz<vertice<tCoste>> P;
-  matriz<tCoste> F{Floyd(G, P)};
-  size_t n{F.dimension()};
-  vector<size_t> diam(n, 0);
-  for (size_t i = 0; i < n; ++i) {
-    const auto& [max_a, max_b] = TwoHighestValues(F[i]);
-    diam[i] = std::get<1>(max_a) + std::get<1>(max_b);
-  }
-  auto nodo = std::min_element(diam.begin(), diam.end());
-  return std::distance(diam.begin(), nodo);
+  auto [nodo, _] = pseudoCentroDiametro(G);
+  return nodo;
 }
 
 template <typename tCoste>
 size_t Diametro(const GrafoP<tCoste>& G) {
-  size_t nodo{PseudoCentro(G)};
-  vector<vertice<tCoste>> P;
-  vector<tCoste> D{Dijkstra(G, nodo, P)};
-  const auto& [nodo_a, nodo_b] = TwoHighestValues(D);
-  return std::get<1>(nodo_a) + std::get<1>(nodo_b);
+  auto [_, diam] = pseudoCentroDiametro(G);
+  return diam;
 }
 
 template <typename tCoste>
@@ -104,8 +108,11 @@ matriz<tCoste> Zuelandia(const GrafoP<tCoste>& G,
   vector<tCoste> D{Dijkstra(Z, capital, P)}, Dinv{DijkstraInv(Z, capital, P)};
   for (vertice<tCoste> v = 0; v < n; ++v) {
     for (vertice<tCoste> w = 0; w < n; ++w) {
-      MCZ[v][w] = ((v == w) ? suma(D[w], Dinv[v]) : GrafoP<tCoste>::INFINITO);
+      MCZ[v][w] = ((v == w) ? 0 : suma(D[w], Dinv[v]));
     }
+  }
+  for (const auto& c : ciudades) {
+    MCZ[c][c] = GrafoP<tCoste>::INFINITO;
   }
   return MCZ;
 }

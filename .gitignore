@@ -39,3 +39,6 @@ graphs/
 # Visual Studio Code
 .vscode
 **/*.py
+**/*.ps
+
+**/*DS_Store

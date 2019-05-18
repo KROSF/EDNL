@@ -12,12 +12,13 @@ class matriz {
   explicit matriz(size_t n, const T& x = T()) : m(n, std::vector<T>(n, x)) {}
   // Devuelve la dimension de la matriz.
   std::size_t dimension() const { return m.size(); }
+  operator std::vector<std::vector<T>>() { return m; }
   const std::vector<T>& operator[](size_t i) const { return m[i]; }
   std::vector<T>& operator[](size_t i) { return m[i]; }
 
  private:
   // Matriz
-  std::vector<std::vector<T> > m;
+  std::vector<std::vector<T>> m;
 };
 }  // namespace grafos
 #endif
