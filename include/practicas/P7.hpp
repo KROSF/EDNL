@@ -1,6 +1,7 @@
 #ifndef PRACTICAS_P7_HPP
 #define PRACTICAS_P7_HPP
 
+#include <algorithm>
 #include <tuple>
 #include "grafos/alg.hpp"
 
@@ -17,12 +18,13 @@ using std::size_t;
 
 template <typename tCoste>
 arista<tCoste> OtraVezUnGrafoSA(const GrafoP<tCoste>& G) {
-  matriz<tCoste> F{FloydMax(G, P)}, P(G.numVert());
+  matriz<vertice<tCoste>> P;
+  matriz<tCoste> F{FloydMax(G, P)};
   const size_t n = F.dimension();
-  arista<tCoste> max_c(0, 0, 0);
+  arista<tCoste> max_c(-1, -1, GrafoP<tCoste>::INFINITO * -1);
   for (vertice<tCoste> v = 0; v < n; ++v) {
     for (vertice<tCoste> w = 0; w < n; ++w) {
-      if (F[v][w] > max.coste) {
+      if (F[v][w] > max_c.coste) {
         max_c = arista<tCoste>(v, w, F[v][w]);
       }
     }
@@ -52,9 +54,10 @@ std::tuple<tCoste, tCamino<tCoste>> Laberinto(
   vector<tCoste> D{Dijkstra(L, inicio, P)};
   return {D[fin], camino<tCoste>(inicio, fin, P)};
 }
-
+#ifdef DISTRI
 template <typename tCoste>
 void Distribucion(vertice<tCoste> centro, size_t cantidad,
                   const GrafoP<tCoste>& costes, const vector<tCoste>& capacidad,
                   const vector<tCoste>& subvencion) {}
+#endif
 #endif

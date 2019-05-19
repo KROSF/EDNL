@@ -26,6 +26,9 @@ class GrafoP {
         : orig{v}, dest{w}, coste{c} {}
     vertice orig, dest;
     tCoste coste;
+    bool operator==(const arista& a) const {
+      return orig == a.orig && dest == a.dest && coste == a.coste;
+    }
   };
   explicit GrafoP(std::size_t n) : costes(n, vector<tCoste>(n, INFINITO)) {}
   explicit GrafoP(std::string_view path);
@@ -94,13 +97,15 @@ std::ostream& operator<<(std::ostream& os, const GrafoP<T>& g) {
     }
   }
   digits = std::to_string(digits).size() + 1;
-  os << "\033[1m\033[31m" << n << " vertices\n\033[32m ";
+  os << "\033[1m\033[31m" << n << " vertices\n\033[32m"
+     << std::string(digits, ' ');
   for (vertice j = 0; j < n; ++j) {
     os << std::setw(digits) << j;
   }
   os << "\033[00m\n";
   for (vertice i = 0; i < n; ++i) {
-    os << "\033[1m\033[32m" << i << "\033[00m" << std::setw(digits);
+    os << "\033[1m\033[32m" << std::setw(digits) << i << "\033[00m"
+       << std::setw(digits);
     for (vertice j = 0; j < n; ++j) {
       if (g[i][j] == GrafoP<T>::INFINITO) {
         os << std::setw(digits + 16) << "\033[1m\033[34m\u221E\033[00m";

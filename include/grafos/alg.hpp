@@ -25,8 +25,9 @@ template <typename T>
  * Suma de costes. Devuelve GrafoP<tCoste>::INFINITO si alguno de los
  * dos parámetros vale GrafoP<tCoste>::INFINITO.
  */
-T suma(T x, T y) {
-  const T INFINITO = GrafoP<T>::INFINITO;
+T suma(T x, T y, bool signedinf = false) {
+  const T INFINITO =
+      ((signedinf) ? GrafoP<T>::INFINITO * -1 : GrafoP<T>::INFINITO);
   if (x == INFINITO || y == INFINITO)
     return INFINITO;
   else
@@ -135,6 +136,34 @@ tCamino<T> camino(vertice<T> orig, vertice<T> v, const vector<vertice<T>>& P,
   return C;
 }
 
+template <typename C>
+vertice<C> visitar(const GrafoP<C>& G, vector<bool>& visitado,
+                   vector<vertice<C>>& orden, vertice<C> index, vertice<C> u) {
+  if (visitado[u]) {
+    return index;
+  }
+  visitado[u] = true;
+  for (vertice<C> v = 0; v < G.numVert(); ++v) {
+    index = visitar(G, visitado, orden, index, v);
+  }
+  orden[index--] = u;
+  return index;
+}
+
+template <typename C>
+vector<vertice<C>> OrdenTopologico(const GrafoP<C>& G) {
+  const size_t n{G.numVert()};
+  vector<bool> visitado(n, false);
+  vector<vertice<C>> orden(n);
+  vertice<C> index{n - 1};
+  for (vertice<C> u = 0; u < n; ++u) {
+    if (!visitado[u]) {
+      index = visitar(G, visitado, orden, index, u);
+    }
+  }
+  return orden;
+}
+
 template <typename tCoste>
 /**  Calcula los caminos de coste mínimo entre cada par de vértices
  * del grafo G. Devuelve una matriz de costes mínimos de tamaño
@@ -181,14 +210,16 @@ matriz<tCoste> FloydMax(const GrafoP<tCoste>& G, matriz<vertice<tCoste>>& P) {
     for (vertice<tCoste> j = 0; j < n; ++j) {
       if (G[i][j] != GrafoP<tCoste>::INFINITO) {
         P[i][j] = i;
+      } else {
+        A[i][j] *= -1;
       }
     }
   }
+
   for (vertice<tCoste> k = 0; k < n; ++k) {
     for (vertice<tCoste> i = 0; i < n; ++i) {
       for (vertice<tCoste> j = 0; j < n; ++j) {
-        if (tCoste ikj = suma(A[i][k], A[k][j]);
-            ikj != GrafoP<tCoste>::INFINITO && ikj > A[i][j]) {
+        if (tCoste ikj = suma(A[i][k], A[k][j], true); ikj > A[i][j]) {
           A[i][j] = ikj;
           P[i][j] = P[k][j];
         }
@@ -380,5 +411,18 @@ Lista<vertice> Anchura(const Grafo& G, vertice u) {
 }
 
 }  // namespace ma::alg
+#ifdef PLA_DIJKSTRA
+namespace pla::alg {
+template <typename T>
+using vertice = typename GrafoP<T>::vertice;
+
+template <typename T>
+using tCamino = typename GrafoP<T>::tCamino;
+
+template <typename tCoste>
+vector<tCoste> Dijkstra(const GrafoP<tCoste>& G, vertice<tCoste> origen,
+                        vector<vertice<tCoste>>& P) {}
+}  // namespace pla::alg
+#endif
 }  // namespace grafos
 #endif

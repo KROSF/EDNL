@@ -51,6 +51,10 @@ add_executable(diam_center.x app/diam_center.cpp)
 add_dependencies(diam_center.x engine)
 target_link_libraries(diam_center.x engine)
 
+add_executable(laberinto.x app/laberinto.cpp)
+add_dependencies(laberinto.x engine)
+target_link_libraries(laberinto.x engine)
+
 # --------------------------------------------------------------------------------
 #                         Make Tests
 # --------------------------------------------------------------------------------

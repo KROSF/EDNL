@@ -1,13 +1,16 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include "practicas/P6.hpp"
+#include "practicas/P7.hpp"
+
 using namespace grafos::pmc;
+using alg::arista;
+using grafos::Lista;
 using std::vector;
 using ::testing::ElementsAre;
 using ::testing::ElementsAreArray;
 class Practica_6 : public ::testing::Test {
  protected:
-  void SetUp() override {}
   vector<alg::vertice<unsigned>> P;
 };
 
@@ -49,8 +52,7 @@ TEST_F(Practica_6, ejercicio_4_Zuelandia) {
   GrafoP<short> G("files/grafos/zuelandia.txt");
   vector<short> ciudades{2, 7, 11};
   short inf{GrafoP<short>::INFINITO};
-  vector<alg::arista<short>> caminos{alg::arista<short>(8, 3),
-                                     alg::arista<short>(12, 5)};
+  vector<arista<short>> caminos{arista<short>(8, 3), arista<short>(12, 5)};
   matriz<short> mcz = Zuelandia(G, ciudades, caminos, 0);
   // clang-format off
   ASSERT_THAT(
@@ -74,4 +76,32 @@ TEST_F(Practica_6, ejercicio_4_Zuelandia) {
   // clang-format on
 }
 
-// TODO Ejercicio 5
+class Practica_7 : public ::testing::Test {};
+
+TEST_F(Practica_7, ejercicio_1_otravezungrafo) {
+  GrafoP<short> G("files/grafos/aciclico.txt");
+  ASSERT_EQ(arista<short>(0, 10, 80), OtraVezUnGrafoSA(G));
+}
+
+TEST_F(Practica_7, ejercicio_2_laberinto) {
+  std::vector<arista<int>> m{
+      arista<int>(0, 1),   arista<int>(2, 3),   arista<int>(6, 7),
+      arista<int>(8, 9),   arista<int>(7, 12),  arista<int>(8, 13),
+      arista<int>(10, 11), arista<int>(13, 14), arista<int>(11, 16),
+      arista<int>(12, 17), arista<int>(18, 19), arista<int>(15, 16),
+      arista<int>(20, 21), arista<int>(17, 22), arista<int>(18, 23),
+      arista<int>(22, 23)};
+  Lista<arista<int>> muros;
+  for (auto e : m) {
+    muros.insertar(e, muros.fin());
+  }
+  std::vector<int> expect;
+  auto [coste, camino] = Laberinto<int>(5, muros, 2, 22);
+  for (auto it = camino.primera(); it != camino.fin();
+       it = camino.siguiente(it)) {
+    expect.push_back(camino.elemento(it));
+  }
+  ASSERT_EQ(10, coste);
+  ASSERT_THAT(expect,
+              ElementsAreArray({2, 1, 6, 11, 12, 13, 18, 17, 16, 21, 22}));
+}
