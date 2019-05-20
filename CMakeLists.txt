@@ -55,6 +55,10 @@ add_executable(laberinto.x app/laberinto.cpp)
 add_dependencies(laberinto.x engine)
 target_link_libraries(laberinto.x engine)
 
+add_executable(cemento.x app/cemento.cpp)
+add_dependencies(cemento.x engine)
+target_link_libraries(cemento.x engine)
+
 # --------------------------------------------------------------------------------
 #                         Make Tests
 # --------------------------------------------------------------------------------

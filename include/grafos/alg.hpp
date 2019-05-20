@@ -80,35 +80,14 @@ template <typename tCoste>
  */
 vector<tCoste> DijkstraInv(const GrafoP<tCoste>& G, vertice<tCoste> destino,
                            vector<vertice<tCoste>>& P) {
-  vertice<tCoste> v, w;
-  const std::size_t n = G.numVert();
-  vector<tCoste> D(n);
-  vector<bool> S(n, false);
-  for (vertice<tCoste> i = 0; i < n; ++i) {
-    D[i] = G[i][destino];
-  }
-  D[destino] = 0;
-  S[destino] = true;
-  P = vector<vertice<tCoste>>(n, destino);
-  for (size_t i = 1; i < n - 2; ++i) {
-    tCoste min = GrafoP<tCoste>::INFINITO;
-    for (v = 0; v < n; ++v) {
-      if (!S[v] && min >= D[v]) {
-        min = D[v];
-        w = v;
-      }
-    }
-    S[w] = true;
-    for (v = 0; v < n; ++v) {
-      if (!S[v]) {
-        if (tCoste coste = suma(G[v][w], D[w]); coste < D[v]) {
-          D[v] = coste;
-          P[v] = w;
-        }
-      }
+  GrafoP<tCoste> Gt{G};
+  const size_t n{G.numVert()};
+  for (vertice<tCoste> v = 0; v < n; ++v) {
+    for (vertice<tCoste> w = 0; w < n; ++w) {
+      Gt[w][v] = G[v][w];
     }
   }
-  return D;
+  return Dijkstra(Gt, destino, P);
 }
 
 template <typename T>

@@ -54,10 +54,34 @@ std::tuple<tCoste, tCamino<tCoste>> Laberinto(
   vector<tCoste> D{Dijkstra(L, inicio, P)};
   return {D[fin], camino<tCoste>(inicio, fin, P)};
 }
-#ifdef DISTRI
+
 template <typename tCoste>
 void Distribucion(vertice<tCoste> centro, size_t cantidad,
-                  const GrafoP<tCoste>& costes, const vector<tCoste>& capacidad,
-                  const vector<tCoste>& subvencion) {}
-#endif
+                  const GrafoP<tCoste>& G, const vector<tCoste>& capacidad,
+                  const vector<tCoste>& subvencion) {
+  const size_t n{G.numVert()};
+  matriz<tCoste> A(n);
+  for (vertice<tCoste> v = 0; v < n; ++v) {
+    A[v] = G[v];
+    for (vertice<tCoste> w = 0; w < n; ++w) {
+      if (A[v][w] != GrafoP<tCoste>::INFINITO) {
+        A[v][w] *= cantidad;
+      }
+    }
+  }
+}
+
+template <typename C>
+double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
+                         const vector<C>& diario) {
+  vector<vertice<C>> P;
+  vector<C> D{Dijkstra(G, capital, P)};
+  vector<C> Dinv{DijkstraInv(G, capital, P)};
+  double km{0};
+  D[capital] = Dinv[capital] = 0;
+  for (vertice<C> v = 0; v < D.size(); ++v) {
+    km += ((Dinv[v] + D[v]) * diario[v]);
+  }
+  return km;
+}
 #endif

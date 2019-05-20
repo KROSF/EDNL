@@ -65,7 +65,7 @@ TEST_F(Practica_6, ejercicio_4_Zuelandia) {
       ElementsAreArray<short>({ 28,  46, inf,  48,   0,  31,  37, inf, inf,  41,  54, inf, inf}),
       ElementsAreArray<short>({ 26,  44, inf,  46,  27,   0,  35, inf, inf,  39,  52, inf, inf}),
       ElementsAreArray<short>({inf, inf, inf, inf, inf, inf,   0, inf, inf, inf, inf, inf, inf}),
-      ElementsAreArray<short>({ 44,  62, inf,  64,  45,  47,  53, inf, inf,  57,  70, inf, inf}),
+      ElementsAreArray<short>({  1,  19, inf,  21,   2,   4,  10, inf, inf,  14,  27, inf, inf}),
       ElementsAreArray<short>({ 28,  46, inf,  48,  29,  31,  37, inf,   0,  41,  54, inf, inf}),
       ElementsAreArray<short>({ 16,  34, inf,  36,  17,  19,  25, inf, inf,   0,  42, inf, inf}),
       ElementsAreArray<short>({  3,  21, inf,  23,   4,   6,  12, inf, inf,  16,   0, inf, inf}),
