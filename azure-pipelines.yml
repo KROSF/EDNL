@@ -3,7 +3,7 @@ trigger:
 jobs:
 - job: 'MacOS'
   pool:
-    vmImage: 'xcode9-macos10.13'
+    vmImage: 'macOS-10.14'
   steps:
   - script: brew install ninja lcov
     displayName: Installing ninja build system
@@ -24,3 +24,15 @@ jobs:
         cmake --build build --config Debug --target unit_tests.x -- -j 6
         cd build && unit_tests.x.exe
       displayName: Testing
+- job: 'Ubuntu'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: apt-get install -y ninja-build
+    displayName: Installing ninja build system
+  - script: |
+      mkdir build
+      cmake -H. -Bbuild -GNinja -DCMAKE_BUILD_TYPE=DEBUG
+      cmake --build build --config Debug --target unit_tests.x -- -j 6
+      ./build/unit_tests.x
+    displayName: Testing
