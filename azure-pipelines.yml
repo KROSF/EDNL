@@ -12,7 +12,7 @@ jobs:
       cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Coverage
       ninja -C build coverage && bash <(curl -s https://codecov.io/bash) -f build/coverage_out.info.cleaned
       ./build/unit_tests.x --gtest_output=xml:report.xml
-      curl -s https://report.ci/upload.py | python - --include='*.xml' --framework=gtest
+      curl -s https://gist.githubusercontent.com/KROSF/a3ce96f887eb1865a5a9993ce4601b8f/raw/e67da070526068b940efdf9d7f60a089113b5ff6/upload.py | python - --include='*.xml' --framework=gtest
     displayName: Coverage
 - job: 'Windows'
   pool:
