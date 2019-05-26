@@ -23,15 +23,15 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-    - script: choco install ninja
-      displayName: Installing ninja build system
-    - script: |
-        mkdir build
-        cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
-        cmake --build build --config Debug --target unit_tests.x -- -j 6
-        cd build && unit_tests.x.exe --gtest_output=xml:TEST-gtest.xml
-      displayName: Testing
-      - task: PublishTestResults@2
-        inputs:
-          testRunner: 'JUnit'
-          failTaskOnFailedTests: true
+  - script: choco install ninja
+    displayName: Installing ninja build system
+  - script: |
+      mkdir build
+      cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+      cmake --build build --config Debug --target unit_tests.x -- -j 6
+      cd build && unit_tests.x.exe --gtest_output=xml:TEST-gtest.xml
+    displayName: Testing
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: 'JUnit'
+      failTaskOnFailedTests: true
