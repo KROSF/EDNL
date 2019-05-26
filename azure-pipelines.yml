@@ -13,12 +13,17 @@ jobs:
       ninja -C build coverage && bash <(curl -s https://codecov.io/bash) -f build/coverage_out.info.cleaned
       ./build/unit_tests.x --gtest_output=xml:TEST-gtest.xml
       curl -s https://raw.githubusercontent.com/report-ci/scripts/master/upload.py | python - --include='*.xml' --framework=gtest
-      gsed -i 's/status="run"//g' TEST-gtest.xml
+      curl -O https://raw.githubusercontent.com/eriwen/lcov-to-cobertura-xml/master/lcov_cobertura/lcov_cobertura.py
+      python3 lcov_cobertura.py build/coverage_out.info.cleaned  -e tests -e external -e files -e cmake -o coverage.xml
     displayName: Coverage
   - task: PublishTestResults@2
     inputs:
       testRunner: 'JUnit'
       failTaskOnFailedTests: true
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage.xml
 - job: 'Windows'
   pool:
     vmImage: 'vs2017-win2016'
