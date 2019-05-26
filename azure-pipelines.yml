@@ -5,15 +5,20 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - script: brew install ninja lcov
+  - script: brew install ninja lcov gnu-sed
     displayName: Installing ninja build system
   - script: |
       mkdir build
       cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Coverage
       ninja -C build coverage && bash <(curl -s https://codecov.io/bash) -f build/coverage_out.info.cleaned
-      ./build/unit_tests.x --gtest_output=xml:report.xml
+      ./build/unit_tests.x --gtest_output=xml:TEST-gtest.xml
       curl -s https://raw.githubusercontent.com/report-ci/scripts/master/upload.py | python - --include='*.xml' --framework=gtest
+      gsed -i 's/status="run"//g' TEST-gtest.xml
     displayName: Coverage
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: 'JUnit'
+      failTaskOnFailedTests: true
 - job: 'Windows'
   pool:
     vmImage: 'vs2017-win2016'
