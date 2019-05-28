@@ -5,7 +5,7 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - script: brew install ninja lcov gnu-sed
+  - script: brew install ninja lcov
     displayName: Installing ninja build system
   - script: |
       mkdir build

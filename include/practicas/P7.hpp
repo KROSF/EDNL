@@ -102,6 +102,35 @@ double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
  * determinada, implementar un subprograma que determine las ciudades a las que
  * podría llegar nuestro infatigable viajero.
  */
+template <typename C>
+void Alergico(const GrafoP<C>& c, const GrafoP<C>& t, const GrafoP<C>& a,
+              C coste, vertice<C> alergia) {
+  const size_t n{c.numVert()};
+  matriz<C> minx(n);
+  std::function<C(vertice<C>, vertice<C>)> fun;
+  switch (alergia) {
+    case 0:
+      fun = [&t, &a](vertice<C> v, vertice<C> w) {
+        return std::min(t[v][w], a[v][w]);
+      };
+      break;
+    case 1:
+      fun = [&c, &t](vertice<C> v, vertice<C> w) {
+        return std::min(c[v][w], t[v][w]);
+      };
+      break;
+    case 2:
+      fun = [&c, &a](vertice<C> v, vertice<C> w) {
+        return std::min(c[v][w], a[v][w]);
+      };
+      break;
+  }
+  for (vertice<C> v = 0; v < n; ++v) {
+    for (vertice<C> w = 0; w < n; ++w) {
+      minx[v][w] = fun(v, w);
+    }
+  }
+}
 
 /**
  *
