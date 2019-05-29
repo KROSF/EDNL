@@ -95,13 +95,26 @@ TEST_F(Practica_7, ejercicio_2_laberinto) {
   for (auto e : m) {
     muros.insertar(e, muros.fin());
   }
-  std::vector<int> expect;
+  std::vector<int> got;
   auto [coste, camino] = Laberinto<int>(5, muros, 2, 22);
   for (auto it = camino.primera(); it != camino.fin();
        it = camino.siguiente(it)) {
-    expect.push_back(camino.elemento(it));
+    got.push_back(camino.elemento(it));
   }
   ASSERT_EQ(10, coste);
-  ASSERT_THAT(expect,
-              ElementsAreArray({2, 1, 6, 11, 12, 13, 18, 17, 16, 21, 22}));
+  ASSERT_THAT(got, ElementsAreArray({2, 1, 6, 11, 12, 13, 18, 17, 16, 21, 22}));
+}
+
+TEST_F(Practica_7, ejercicio_7_alergia) {
+  GrafoP<short> A("files/grafos/p7-5-a.txt");
+  GrafoP<short> C("files/grafos/p7-5-c.txt");
+  GrafoP<short> T("files/grafos/p7-5-t.txt");
+  short presupuesto{50};
+  vector<vector<short>> got(3);
+  got[0] = Alergico(C, A, T, presupuesto, 0, 0);
+  got[1] = Alergico(C, A, T, presupuesto, 1, 0);
+  got[2] = Alergico(C, A, T, presupuesto, 2, 0);
+  ASSERT_THAT(got, ElementsAreArray({vector<short>{1, 2, 3, 4, 11, 12},
+                                     vector<short>{1, 2, 3, 4, 5, 6, 11, 12},
+                                     vector<short>{4, 11, 12}}));
 }

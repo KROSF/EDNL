@@ -62,6 +62,10 @@ add_executable(cemento.x app/cemento.cpp)
 add_dependencies(cemento.x engine)
 target_link_libraries(cemento.x engine)
 
+add_executable(zldgen.x app/zldgen.cpp)
+add_dependencies(zldgen.x engine)
+target_link_libraries(zldgen.x engine)
+
 # --------------------------------------------------------------------------------
 #                         Make Tests
 # --------------------------------------------------------------------------------

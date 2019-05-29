@@ -92,16 +92,33 @@ double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
 
 /**
  *
- * @todo Practica 7: Ejercicio 5
- * @body Se dispone de tres grafos que representan la matriz de costes para
- * viajes en un determinado país pero por diferentes medios de transporte, por
- * supuesto todos los grafos tendrán el mismo número de nodos. El primer grafo
- * representa los costes de ir por carretera, el segundo en tren y el tercero en
- * avión. Dado un viajero que dispone de una determinada cantidad de dinero, que
- * es alérgico a uno de los tres medios de transporte, y que sale de una ciudad
- * determinada, implementar un subprograma que determine las ciudades a las que
- * podría llegar nuestro infatigable viajero.
+ * @done Practica 7: Ejercicio 5
+ *
  */
+template <typename C>
+vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
+                   const GrafoP<C>& avion, C presupuesto, vertice<C> alergico,
+                   vertice<C> origen) {
+  const size_t n{carretera.numVert()};
+  vector<const GrafoP<C>*> grfs{&carretera, &tren, &avion};
+  grfs.erase(grfs.begin() + alergico);
+  GrafoP<C> min_transporte(n);
+  const GrafoP<C> transporte0{*grfs[0]}, transporte1{*grfs[1]};
+  for (vertice<C> v = 0; v < n; ++v) {
+    for (vertice<C> w = 0; w < n; ++w) {
+      min_transporte[v][w] = std::min(transporte0[v][w], transporte1[v][w]);
+    }
+  }
+  vector<C> ciudades;
+  vector<vertice<C>> P;
+  vector<C> D{Dijkstra(min_transporte, origen, P)};
+  for (size_t i = 0; i < n; ++i) {
+    if (D[i] <= presupuesto && i != origen) {
+      ciudades.push_back(i);
+    }
+  }
+  return ciudades;
+}
 
 /**
  *
