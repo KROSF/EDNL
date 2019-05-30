@@ -115,6 +115,6 @@ TEST_F(Practica_7, ejercicio_7_alergia) {
   got[1] = Alergico(C, A, T, presupuesto, 1, 0);
   got[2] = Alergico(C, A, T, presupuesto, 2, 0);
   ASSERT_THAT(got, ElementsAreArray({vector<short>{1, 2, 3, 4, 11, 12},
-                                     vector<short>{1, 2, 3, 4, 5, 6, 11, 12},
-                                     vector<short>{4, 11, 12}}));
+                                     vector<short>{4, 11, 12},
+                                     vector<short>{1, 2, 3, 4, 5, 6, 11, 12}}));
 }

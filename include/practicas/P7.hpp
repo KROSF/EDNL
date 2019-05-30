@@ -100,7 +100,7 @@ vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
                    const GrafoP<C>& avion, C presupuesto, vertice<C> alergico,
                    vertice<C> origen) {
   const size_t n{carretera.numVert()};
-  vector<const GrafoP<C>*> grfs{&carretera, &tren, &avion};
+  vector<const GrafoP<C>*> grfs{&carretera, &avion, &tren};
   grfs.erase(grfs.begin() + alergico);
   GrafoP<C> min_transporte(n);
   const GrafoP<C> transporte0{*grfs[0]}, transporte1{*grfs[1]};
