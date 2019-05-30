@@ -40,6 +40,6 @@ graphs/
 .vscode
 **/*.py
 **/*.ps
-
+python
 **/*DS_Store
 **/._*

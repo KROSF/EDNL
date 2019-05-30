@@ -100,7 +100,7 @@ vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
                    const GrafoP<C>& avion, C presupuesto, vertice<C> alergico,
                    vertice<C> origen) {
   const size_t n{carretera.numVert()};
-  vector<const GrafoP<C>*> grfs{&carretera, &tren, &avion};
+  vector<const GrafoP<C>*> grfs{&carretera, &avion, &tren};
   grfs.erase(grfs.begin() + alergico);
   GrafoP<C> min_transporte(n);
   const GrafoP<C> transporte0{*grfs[0]}, transporte1{*grfs[1]};
@@ -137,6 +137,24 @@ vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
  * de costes en autobús, del grafo de costes en tren, y de la ciudad que tiene
  * las estaciones unidas.
  */
+
+template <typename C>
+matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
+                                   vertice<C> estacion) {
+  matriz<vertice<C>> P;
+  matriz<C> F_Bus{Floyd(bus, P)};
+  matriz<C> F_Tren{Floyd(tren, P)};
+  const size_t dim{bus.numVert()};
+  matriz<C> F_min(dim);
+  for (vertice<C> v = 0; v < dim; ++v) {
+    for (vertice<C> w = 0; w < dim; ++w) {
+      F_min[v][w] = std::min({F_Bus[v][w], F_Tren[v][w],
+                              F_Bus[v][estacion] + F_Tren[estacion][w],
+                              F_Tren[v][estacion] + F_Tren[estacion][w]});
+    }
+  }
+  return F_min;
+}
 
 /**
  *
