@@ -138,6 +138,24 @@ vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
  * las estaciones unidas.
  */
 
+template <typename C>
+matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
+                                   vertice<C> estacion) {
+  matriz<vertice<C>> P;
+  matriz<C> F_Bus{Floyd(bus, P)};
+  matriz<C> F_Tren{Floyd(tren, P)};
+  const size_t dim{bus.numVert()};
+  matriz<C> F_min(dim);
+  for (vertice<C> v = 0; v < dim; ++v) {
+    for (vertice<C> w = 0; w < dim; ++w) {
+      F_min[v][w] = std::min({F_Bus[v][w], F_Tren[v][w],
+                              F_Bus[v][estacion] + F_Tren[estacion][w],
+                              F_Tren[v][estacion] + F_Tren[estacion][w]});
+    }
+  }
+  return F_min;
+}
+
 /**
  *
  * @todo Practica 7: Ejercicio 7
