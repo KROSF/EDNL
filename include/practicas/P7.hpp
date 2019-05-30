@@ -174,6 +174,34 @@ matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
  * para viajar entre las ciudades Origen y Destino en estas condiciones.
  */
 
+template <typename C>
+std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
+    const GrafoP<C>& bus, const GrafoP<C>& tren, vertice<C> origen,
+    vertice<C> destino, vertice<C> estacion, vertice<C> estacion2) {
+  vector<vertice<C>> Porig, Pdest;
+  vector<C> D{Dijkstra(tren, origen, Porig)};
+  vector<C> Dinv{DijkstraInv(bus, destino, Pdest)};
+  vector<C> min_path{D[destino], Dinv[origen], D[estacion] + Dinv[estacion],
+                     D[estacion2] + Dinv[estacion2]};
+  auto min_index = std::distance(
+      min_path.begin(), std::min_element(min_path.begin(), min_path.end()));
+  tCamino<T> path;
+  switch (min_index) {
+    case 0:
+      path = camino(origen, destino, Porig);
+    case 1:
+      path = camino(destino, origen, Pdest);
+    case 2:
+      path = camino(origen, estacion, Porig) +=
+          camino(destino, estacion, Pdest);
+    case 3:
+      path = camino(origen, estacion2, Porig) +=
+          camino(destino, estacion2, Pdest);
+  }
+
+  return {path, min_path[min_index]};
+}
+
 /**
  *
  * @todo Practica 7: Ejercicio 8

@@ -134,3 +134,19 @@ TEST_F(Practica_7, ejercicio_6_agencia_transporte_sin_taxi) {
                                             {91, 92, 70, 115, 57, 94, 0, 111},
                                             {57, 50, 102, 9, 54, 54, 111, 0}}));
 }
+
+TEST_F(Practica_7, ejercicio_7_transporte_sin_taxi_dos_estaciones) {
+  GrafoP<int> B("files/grafos/bus.txt");
+  GrafoP<int> T("files/grafos/tren.txt");
+  vector<vector<int>> F_min = static_cast<vector<vector<int>>>(
+      TransporteSinTaxiDosEstaciones(B, T, 4, 3));
+  ASSERT_THAT(
+      F_min, ElementsAreArray<vector<int>>({{0, 70, 13, 11, 64, 32, 91, 20},
+                                            {77, 0, 31, 59, 30, 62, 87, 50},
+                                            {13, 31, 0, 57, 47, 78, 70, 66},
+                                            {11, 59, 57, 0, 53, 21, 110, 9},
+                                            {64, 30, 47, 53, 0, 32, 57, 54},
+                                            {32, 62, 78, 21, 32, 0, 89, 30},
+                                            {91, 92, 70, 115, 57, 94, 0, 111},
+                                            {57, 50, 102, 9, 54, 54, 111, 0}}));
+}
