@@ -95,23 +95,25 @@ template <typename T>
  * Devuelve el camino de coste mínimo entre los vértices orig  y v
  * a partir de un vector P obtenido mediante la función Dijkstra().
  */
-tCamino<T> camino(vertice<T> orig, vertice<T> v, const vector<vertice<T>>& P,
-                  bool inv = false) {
+tCamino<T> camino(vertice<T> orig, vertice<T> v, const vector<vertice<T>>& P) {
   tCamino<T> C;
-  if (inv) {
-    std::swap(orig, v);
-    C.insertar(v, C.fin());
-    do {
-      C.insertar(P[v], C.fin());
-      v = P[v];
-    } while (v != orig);
-  } else {
-    C.insertar(v, C.primera());
-    do {
-      C.insertar(P[v], C.primera());
-      v = P[v];
-    } while (v != orig);
-  }
+  C.insertar(v, C.primera());
+  do {
+    C.insertar(P[v], C.primera());
+    v = P[v];
+  } while (v != orig);
+  return C;
+}
+
+template <typename T>
+tCamino<T> caminoInv(vertice<T> destino, vertice<T> v,
+                     const vector<vertice<T>>& P) {
+  tCamino<T> C;
+  C.insertar(v, C.fin());
+  do {
+    C.insertar(P[v], C.fin());
+    v = P[v];
+  } while (v != destino);
   return C;
 }
 
@@ -390,18 +392,5 @@ Lista<vertice> Anchura(const Grafo& G, vertice u) {
 }
 
 }  // namespace ma::alg
-#ifdef PLA_DIJKSTRA
-namespace pla::alg {
-template <typename T>
-using vertice = typename GrafoP<T>::vertice;
-
-template <typename T>
-using tCamino = typename GrafoP<T>::tCamino;
-
-template <typename tCoste>
-vector<tCoste> Dijkstra(const GrafoP<tCoste>& G, vertice<tCoste> origen,
-                        vector<vertice<tCoste>>& P) {}
-}  // namespace pla::alg
-#endif
 }  // namespace grafos
 #endif

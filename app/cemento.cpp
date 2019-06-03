@@ -15,7 +15,6 @@ double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
   vector<C> Dinv{DijkstraInv(G, capital, P)};
   std::cout << Dinv << std::endl << "   ";
   double km{0};
-  D[capital] = Dinv[capital] = 0;
   for (vertice<C> v = 0; v < D.size(); ++v) {
     km += ((Dinv[v] + D[v]) * diario[v]);
     std::cout << km << " ";

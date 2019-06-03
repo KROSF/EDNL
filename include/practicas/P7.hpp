@@ -10,6 +10,7 @@ using grafos::matriz;
 using grafos::pmc::GrafoP;
 using grafos::pmc::alg::arista;
 using grafos::pmc::alg::camino;
+using grafos::pmc::alg::caminoInv;
 using grafos::pmc::alg::Dijkstra;
 using grafos::pmc::alg::FloydMax;
 using grafos::pmc::alg::tCamino;
@@ -83,7 +84,6 @@ double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
   vector<C> D{Dijkstra(G, capital, P)};
   vector<C> Dinv{DijkstraInv(G, capital, P)};
   double km{0};
-  D[capital] = Dinv[capital] = 0;
   for (vertice<C> v = 0; v < D.size(); ++v) {
     km += ((Dinv[v] + D[v]) * diario[v]);
   }
@@ -156,23 +156,28 @@ matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
   return F_min;
 }
 
-/**
- *
- * @todo Practica 7: Ejercicio 7
- * @body Se dispone de dos grafos (matriz de costes) que representan los costes
- * de viajar entre N ciudades españolas utilizando el tren (primer grafo) y el
- * autobús (segundo grafo). Ambos grafos representan viajes entre las mismas N
- * ciudades. Nuestro objetivo es hallar el camino de coste mínimo para viajar
- * entre dos ciudades concretas del grafo, origen y destino, en las siguientes
- * condiciones:
- * - La ciudad origen sólo dispone de transporte por tren.
- * - La ciudad destino sólo dispone de transporte por autobús.
- * - El sector del taxi, bastante conflictivo en nuestros problemas, sigue en
- * huelga, por lo que únicamente es posible cambiar de transporte en dos
- * ciudades del grafo, cambio1 y cambio2, donde las estaciones de tren y autobús
- * están unidas. Implementa un subprograma que calcule la ruta y el coste mínimo
- * para viajar entre las ciudades Origen y Destino en estas condiciones.
- */
+template <typename C>
+std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
+    const GrafoP<C>& tren, const GrafoP<C>& bus, vertice<C> origen,
+    vertice<C> destino, vertice<C> estacion, vertice<C> estacion2) {
+  vector<vertice<C>> Porig, Pdest;
+  vector<C> D{Dijkstra(tren, origen, Porig)};
+  vector<C> Dinv{DijkstraInv(bus, destino, Pdest)};
+  tCamino<C> path;
+  C min_coste{D[estacion] + Dinv[estacion]},
+      coste_e2{D[estacion2] + Dinv[estacion2]};
+  if (min_coste < coste_e2) {
+    path = camino<C>(origen, estacion, Porig);
+    path.eliminar(path.anterior(path.fin()));
+    path += caminoInv<C>(destino, estacion, Pdest);
+  } else {
+    min_coste = coste_e2;
+    path = camino<C>(origen, estacion2, Porig);
+    path.eliminar(path.anterior(path.fin()));
+    path += caminoInv<C>(destino, estacion2, Pdest);
+  }
+  return {min_coste, path};
+}
 
 /**
  *
