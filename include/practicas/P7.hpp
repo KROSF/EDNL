@@ -158,7 +158,7 @@ matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
 
 template <typename C>
 std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
-    const GrafoP<C>& bus, const GrafoP<C>& tren, vertice<C> origen,
+    const GrafoP<C>& tren, const GrafoP<C>& bus, vertice<C> origen,
     vertice<C> destino, vertice<C> estacion, vertice<C> estacion2) {
   vector<vertice<C>> Porig, Pdest;
   vector<C> D{Dijkstra(tren, origen, Porig)};
@@ -167,9 +167,9 @@ std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
   C min_coste{D[estacion] + Dinv[estacion]},
       coste_e2{D[estacion2] + Dinv[estacion2]};
   if (min_coste < coste_e2) {
-    path = camino<C>(estacion, origen, Porig);
+    path = camino<C>(origen, estacion, Porig);
     path.eliminar(path.anterior(path.fin()));
-    path += caminoInv<C>(estacion, destino, Pdest);
+    path += caminoInv<C>(destino, estacion, Pdest);
   } else {
     min_coste = coste_e2;
     path = camino<C>(origen, estacion2, Porig);

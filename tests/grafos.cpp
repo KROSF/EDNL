@@ -145,11 +145,24 @@ TEST_F(Practica_7, ejercicio_7_transporte_sin_taxi_dos_estaciones) {
   GrafoP<int> B("files/grafos/bus.txt");
   GrafoP<int> T("files/grafos/tren.txt");
   vector<int> got;
-  auto [coste, camino] = TransporteSinTaxiDosEstaciones(B, T, 0, 7, 4, 3);
+  auto [coste, camino] = TransporteSinTaxiDosEstaciones(T, B, 0, 7, 4, 3);
   for (auto it = camino.primera(); it != camino.fin();
        it = camino.siguiente(it)) {
     got.push_back(camino.elemento(it));
   }
   ASSERT_EQ(coste, 126);
   ASSERT_THAT(got, ElementsAreArray({0, 3, 7}));
+}
+
+TEST_F(Practica_7, ejercicio_7_transporte_sin_taxi_dos_estaciones_2) {
+  GrafoP<int> B("files/grafos/bus.txt");
+  GrafoP<int> T("files/grafos/tren.txt");
+  vector<int> got;
+  auto [coste, camino] = TransporteSinTaxiDosEstaciones(T, B, 1, 6, 4, 3);
+  for (auto it = camino.primera(); it != camino.fin();
+       it = camino.siguiente(it)) {
+    got.push_back(camino.elemento(it));
+  }
+  ASSERT_EQ(coste, 123);
+  ASSERT_THAT(got, ElementsAreArray({1, 4, 6}));
 }
