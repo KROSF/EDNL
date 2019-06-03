@@ -12,7 +12,6 @@ jobs:
       cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Coverage
       ninja -C build coverage && bash <(curl -s https://codecov.io/bash) -f build/coverage_out.info.cleaned
       ./build/unit_tests.x --gtest_output=xml:TEST-gtest.xml
-      curl -s https://raw.githubusercontent.com/report-ci/scripts/master/upload.py | python - --include='*.xml' --framework=gtest
     displayName: Coverage
   - task: PublishTestResults@2
     inputs:
