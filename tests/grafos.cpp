@@ -105,6 +105,12 @@ TEST_F(Practica_7, ejercicio_2_laberinto) {
   ASSERT_THAT(got, ElementsAreArray({2, 1, 6, 11, 12, 13, 18, 17, 16, 21, 22}));
 }
 
+TEST_F(Practica_7, ejercicio_4_cementos_zuelandia) {
+  GrafoP<short> G("files/grafos/zuelandia.txt");
+  vector<short> diario{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+  EXPECT_EQ(419, CementosZuelandia(G, 0, diario));
+}
+
 TEST_F(Practica_7, ejercicio_5_alergia) {
   GrafoP<short> A("files/grafos/p7-5-a.txt");
   GrafoP<short> C("files/grafos/p7-5-c.txt");
@@ -138,15 +144,12 @@ TEST_F(Practica_7, ejercicio_6_agencia_transporte_sin_taxi) {
 TEST_F(Practica_7, ejercicio_7_transporte_sin_taxi_dos_estaciones) {
   GrafoP<int> B("files/grafos/bus.txt");
   GrafoP<int> T("files/grafos/tren.txt");
-  vector<vector<int>> F_min = static_cast<vector<vector<int>>>(
-      TransporteSinTaxiDosEstaciones(B, T, 4, 3));
-  ASSERT_THAT(
-      F_min, ElementsAreArray<vector<int>>({{0, 70, 13, 11, 64, 32, 91, 20},
-                                            {77, 0, 31, 59, 30, 62, 87, 50},
-                                            {13, 31, 0, 57, 47, 78, 70, 66},
-                                            {11, 59, 57, 0, 53, 21, 110, 9},
-                                            {64, 30, 47, 53, 0, 32, 57, 54},
-                                            {32, 62, 78, 21, 32, 0, 89, 30},
-                                            {91, 92, 70, 115, 57, 94, 0, 111},
-                                            {57, 50, 102, 9, 54, 54, 111, 0}}));
+  vector<int> got;
+  auto [coste, camino] = TransporteSinTaxiDosEstaciones(B, T, 0, 7, 4, 3);
+  for (auto it = camino.primera(); it != camino.fin();
+       it = camino.siguiente(it)) {
+    got.push_back(camino.elemento(it));
+  }
+  ASSERT_EQ(coste, 126);
+  ASSERT_THAT(got, ElementsAreArray({0, 3, 7}));
 }

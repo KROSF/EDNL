@@ -10,6 +10,7 @@ using grafos::matriz;
 using grafos::pmc::GrafoP;
 using grafos::pmc::alg::arista;
 using grafos::pmc::alg::camino;
+using grafos::pmc::alg::caminoInv;
 using grafos::pmc::alg::Dijkstra;
 using grafos::pmc::alg::FloydMax;
 using grafos::pmc::alg::tCamino;
@@ -83,7 +84,6 @@ double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
   vector<C> D{Dijkstra(G, capital, P)};
   vector<C> Dinv{DijkstraInv(G, capital, P)};
   double km{0};
-  D[capital] = Dinv[capital] = 0;
   for (vertice<C> v = 0; v < D.size(); ++v) {
     km += ((Dinv[v] + D[v]) * diario[v]);
   }
@@ -163,25 +163,20 @@ std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
   vector<vertice<C>> Porig, Pdest;
   vector<C> D{Dijkstra(tren, origen, Porig)};
   vector<C> Dinv{DijkstraInv(bus, destino, Pdest)};
-  vector<C> min_path{D[destino], Dinv[origen], D[estacion] + Dinv[estacion],
-                     D[estacion2] + Dinv[estacion2]};
-  auto min_index = std::distance(
-      min_path.begin(), std::min_element(min_path.begin(), min_path.end()));
-  tCamino<T> path;
-  switch (min_index) {
-    case 0:
-      path = camino(origen, destino, Porig);
-    case 1:
-      path = camino(destino, origen, Pdest);
-    case 2:
-      path = camino(origen, estacion, Porig) +=
-          camino(destino, estacion, Pdest);
-    case 3:
-      path = camino(origen, estacion2, Porig) +=
-          camino(destino, estacion2, Pdest);
+  tCamino<C> path;
+  C min_coste{D[estacion] + Dinv[estacion]},
+      coste_e2{D[estacion2] + Dinv[estacion2]};
+  if (min_coste < coste_e2) {
+    path = camino<C>(estacion, origen, Porig);
+    path.eliminar(path.anterior(path.fin()));
+    path += caminoInv<C>(estacion, destino, Pdest);
+  } else {
+    min_coste = coste_e2;
+    path = camino<C>(origen, estacion2, Porig);
+    path.eliminar(path.anterior(path.fin()));
+    path += caminoInv<C>(destino, estacion2, Pdest);
   }
-
-  return {path, min_path[min_index]};
+  return {min_coste, path};
 }
 
 /**
