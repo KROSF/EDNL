@@ -17,6 +17,9 @@ using grafos::pmc::alg::tCamino;
 using grafos::pmc::alg::vertice;
 using std::size_t;
 
+/**
+ * @done Practica 7: Ejercicio 1
+ */
 template <typename tCoste>
 arista<tCoste> OtraVezUnGrafoSA(const GrafoP<tCoste>& G) {
   matriz<vertice<tCoste>> P;
@@ -33,6 +36,9 @@ arista<tCoste> OtraVezUnGrafoSA(const GrafoP<tCoste>& G) {
   return max_c;
 }
 
+/**
+ * @done Practica 7: Ejercicio 2
+ */
 template <typename tCoste>
 std::tuple<tCoste, tCamino<tCoste>> Laberinto(
     size_t dim, const Lista<arista<tCoste>>& paredes, vertice<tCoste> inicio,
@@ -77,6 +83,9 @@ void Distribucion(vertice<tCoste> centro, size_t cantidad,
   }
 }
 
+/**
+ * @done Practica 7: Ejercicio 4
+ */
 template <typename C>
 double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
                          const vector<C>& diario) {
@@ -91,9 +100,7 @@ double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
 }
 
 /**
- *
  * @done Practica 7: Ejercicio 5
- *
  */
 template <typename C>
 vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
@@ -121,23 +128,8 @@ vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
 }
 
 /**
- *
- * @todo Practica 7: Ejercicio 6
- * @body Al dueño de una agencia de transportes se le plantea la siguiente
- * situación. La agencia de viajes ofrece distintas trayectorias combinadas
- * entre N ciudades españolas utilizando tren y autobús. Se dispone de dos
- * grafos que representan los costes (matriz de costes) de viajar entre
- * diferentes ciudades, por un lado en tren, y por otro en autobús (por supuesto
- * entre las ciudades que tengan línea directa entre ellas). Además coincide que
- * los taxis de toda España se encuentran en estos momentos en huelga general,
- * lo que implica que sólo se podrá cambiar de transporte en una ciudad
- * determinada en la que, por casualidad, las estaciones de tren y autobús están
- * unidas. Implementa una función que calcule la tarifa mínima (matriz de costes
- * mínimos) de viajar entre cualesquiera de las N ciudades disponiendo del grafo
- * de costes en autobús, del grafo de costes en tren, y de la ciudad que tiene
- * las estaciones unidas.
+ * @done Practica 7: Ejercicio 6
  */
-
 template <typename C>
 matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
                                    vertice<C> estacion) {
@@ -156,6 +148,9 @@ matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
   return F_min;
 }
 
+/**
+ * @done Practica 7: Ejercicio 7
+ */
 template <typename C>
 std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
     const GrafoP<C>& tren, const GrafoP<C>& bus, vertice<C> origen,
@@ -198,6 +193,22 @@ std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
  * mínima en estas condiciones. Mucha suerte en el negocio, que la competencia
  * es dura.
  */
+
+template <typename C>
+C UnSoloTransbordo(const GrafoP<C>& tren, const GrafoP<C>& bus,
+                   vertice<C> origen, vertice<C> destino) {
+  vector<vertice<C>> P;
+  vector<C> DTren{Dijkstra(tren, origen, P)},
+      DInvTren{DijkstraInv(tren, destino, P)}, DBus{Dijkstra(tren, origen, P)},
+      DInvBus{DijkstraInv(tren, destino, P)};
+  const size_t n = tren.numVert();
+  vector<C> min_elem(2 * n);
+  for (size_t i = 0; i < n; ++i) {
+    min_elem[i] = DTren[i] + DInvBus[i];
+    min_elem[n + i] = DBus[n + i] + DInvTren[n + i];
+  }
+  return *std::min_element(min_elem.begin(), min_elem.end());
+}
 
 /**
  *

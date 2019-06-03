@@ -105,6 +105,8 @@ TEST_F(Practica_7, ejercicio_2_laberinto) {
   ASSERT_THAT(got, ElementsAreArray({2, 1, 6, 11, 12, 13, 18, 17, 16, 21, 22}));
 }
 
+TEST_F(Practica_7, DISABLED_ejercico_3_distribucion) {}
+
 TEST_F(Practica_7, ejercicio_4_cementos_zuelandia) {
   GrafoP<short> G("files/grafos/zuelandia.txt");
   vector<short> diario{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
