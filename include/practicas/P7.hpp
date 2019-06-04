@@ -175,53 +175,59 @@ std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
 }
 
 /**
- *
- * @todo Practica 7: Ejercicio 8
- * @body "UN SOLO TRANSBORDO, POR FAVOR". Este es el título que reza en tu
- * flamante compañía de viajes. Tu publicidad explica, por supuesto, que ofreces
- * viajes combinados de TREN y/o AUTOBÚS (es decir, viajes en tren, en autobús,
- * o usando ambos), entre N ciudades del país, que ofreces un servicio
- * inmejorable, precios muy competitivos, y que garantizas ante notario algo que
- * no ofrece ninguno de tus competidores: que en todos tus viajes COMO MÁXIMO se
- * hará un solo transbordo (cambio de medio de transporte). Bien, hoy es 1 de
- * Julio y comienza la temporada de viajes. ¡Qué suerte! Acaba de aparecer un
- * cliente en tu oficina. Te explica que quiere viajar entre dos ciudades,
- * Origen y Destino, y quiere saber cuánto le costará. Para responder a esa
- * pregunta dispones de dos grafos de costes directos (matriz de costes) de
- * viajar entre las N ciudades del país, un grafo con los costes de viajar en
- * tren y otro en autobús. Implementa un subprograma que calcule la tarifa
- * mínima en estas condiciones. Mucha suerte en el negocio, que la competencia
- * es dura.
+ * @done Practica 7: Ejercicio 8
  */
-
 template <typename C>
 C UnSoloTransbordo(const GrafoP<C>& tren, const GrafoP<C>& bus,
                    vertice<C> origen, vertice<C> destino) {
   vector<vertice<C>> P;
-  vector<C> DTren{Dijkstra(tren, origen, P)},
-      DInvTren{DijkstraInv(tren, destino, P)}, DBus{Dijkstra(tren, origen, P)},
-      DInvBus{DijkstraInv(tren, destino, P)};
+  vector<C> DTren{Dijkstra(tren, origen, P)};
+  vector<C> DInvTren{DijkstraInv(tren, destino, P)};
+  vector<C> DBus{Dijkstra(bus, origen, P)};
+  vector<C> DInvBus{DijkstraInv(bus, destino, P)};
   const size_t n = tren.numVert();
   vector<C> min_elem(2 * n);
   for (size_t i = 0; i < n; ++i) {
     min_elem[i] = DTren[i] + DInvBus[i];
-    min_elem[n + i] = DBus[n + i] + DInvTren[n + i];
+    min_elem[n + i] = DBus[i] + DInvTren[i];
   }
   return *std::min_element(min_elem.begin(), min_elem.end());
 }
 
 /**
- *
- * @todo Practica 7: Ejercicio 9
- * @body Se dispone de dos grafos que representan la matriz de costes para
- * viajes en un determinado país, pero por diferentes medios de transporte (tren
- * y autobús, por ejemplo). Por supuesto ambos grafos tendrán el mismo número de
- * nodos, N. Dados ambos grafos, una ciudad de origen, una ciudad de destino y
- * el coste del taxi para cambiar de una estación a otra dentro de cualquier
- * ciudad (se supone constante e igual para todas las ciudades), implementa un
- * subprograma que calcule el camino y el coste mínimo para ir de la ciudad
- * origen a la ciudad destino.
+ * @done Practica 7: Ejercicio 9
  */
+template <typename C>
+std::tuple<C, tCamino<C>> TransporteConTaxi(const GrafoP<C>& bus,
+                                            const GrafoP<C>& tren,
+                                            vertice<C> origen,
+                                            vertice<C> destino) {
+  const size_t n = bus.numVert();
+  GrafoP<C> BG(2 * n);
+  for (vertice<C> v = 0; v < n; ++v) {
+    for (vertice<C> w = 0; w < n; ++w) {
+      BG[v][w] = tren[v][w];
+      BG[v + n][w + n] = bus[v][w];
+      if (v == w) {
+        BG[v][w + n] = BG[v + n][w] = 1;
+      }
+    }
+  }
+  vector<vertice<C>> P;
+  vector<C> D{Dijkstra(BG, origen, P)};
+  tCamino<C> path;
+  if (D[destino] < D[destino + n]) {
+    path = camino<C>(origen, destino, P);
+  } else {
+    path = camino<C>(origen, destino + n, P);
+  }
+  for (auto it = path.primera(); it != path.fin(); it = path.siguiente(it)) {
+    if (path.elemento(it) > n - 1) {
+      path.elemento(it) -= n;
+    }
+  }
+  return {std::min(D[destino], D[destino + n]), path};
+}
 
 /**
  *

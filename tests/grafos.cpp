@@ -168,3 +168,36 @@ TEST_F(Practica_7, ejercicio_7_transporte_sin_taxi_dos_estaciones_2) {
   ASSERT_EQ(coste, 123);
   ASSERT_THAT(got, ElementsAreArray({1, 4, 6}));
 }
+
+TEST_F(Practica_7, ejercicio_8_un_solo_transbordo) {
+  GrafoP<int> B("files/grafos/bus.txt");
+  GrafoP<int> T("files/grafos/tren.txt");
+  int coste{UnSoloTransbordo(T, B, 0, 7)};
+  ASSERT_EQ(20, coste);
+}
+
+TEST_F(Practica_7, ejercicio_9_transporte_con_taxi) {
+  GrafoP<int> B("files/grafos/bus.txt");
+  GrafoP<int> T("files/grafos/tren.txt");
+  vector<int> got;
+  auto [coste, camino] = TransporteConTaxi(B, T, 0, 1);
+  for (auto it = camino.primera(); it != camino.fin();
+       it = camino.siguiente(it)) {
+    got.push_back(camino.elemento(it));
+  }
+  ASSERT_EQ(coste, 45);
+  ASSERT_THAT(got, ElementsAreArray({0, 2, 2, 1}));
+}
+
+TEST_F(Practica_7, ejercicio_9_transporte_con_taxi2) {
+  GrafoP<int> B("files/grafos/bus.txt");
+  GrafoP<int> T("files/grafos/tren.txt");
+  vector<int> got;
+  auto [coste, camino] = TransporteConTaxi(B, T, 0, 7);
+  for (auto it = camino.primera(); it != camino.fin();
+       it = camino.siguiente(it)) {
+    got.push_back(camino.elemento(it));
+  }
+  ASSERT_EQ(coste, 22);
+  ASSERT_THAT(got, ElementsAreArray({0, 0, 3, 3, 7}));
+}
