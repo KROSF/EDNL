@@ -17,6 +17,9 @@ using grafos::pmc::alg::tCamino;
 using grafos::pmc::alg::vertice;
 using std::size_t;
 
+/**
+ * @done Practica 7: Ejercicio 1
+ */
 template <typename tCoste>
 arista<tCoste> OtraVezUnGrafoSA(const GrafoP<tCoste>& G) {
   matriz<vertice<tCoste>> P;
@@ -33,6 +36,9 @@ arista<tCoste> OtraVezUnGrafoSA(const GrafoP<tCoste>& G) {
   return max_c;
 }
 
+/**
+ * @done Practica 7: Ejercicio 2
+ */
 template <typename tCoste>
 std::tuple<tCoste, tCamino<tCoste>> Laberinto(
     size_t dim, const Lista<arista<tCoste>>& paredes, vertice<tCoste> inicio,
@@ -77,6 +83,9 @@ void Distribucion(vertice<tCoste> centro, size_t cantidad,
   }
 }
 
+/**
+ * @done Practica 7: Ejercicio 4
+ */
 template <typename C>
 double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
                          const vector<C>& diario) {
@@ -91,9 +100,7 @@ double CementosZuelandia(const GrafoP<C>& G, vertice<C> capital,
 }
 
 /**
- *
  * @done Practica 7: Ejercicio 5
- *
  */
 template <typename C>
 vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
@@ -121,23 +128,8 @@ vector<C> Alergico(const GrafoP<C>& carretera, const GrafoP<C>& tren,
 }
 
 /**
- *
- * @todo Practica 7: Ejercicio 6
- * @body Al dueño de una agencia de transportes se le plantea la siguiente
- * situación. La agencia de viajes ofrece distintas trayectorias combinadas
- * entre N ciudades españolas utilizando tren y autobús. Se dispone de dos
- * grafos que representan los costes (matriz de costes) de viajar entre
- * diferentes ciudades, por un lado en tren, y por otro en autobús (por supuesto
- * entre las ciudades que tengan línea directa entre ellas). Además coincide que
- * los taxis de toda España se encuentran en estos momentos en huelga general,
- * lo que implica que sólo se podrá cambiar de transporte en una ciudad
- * determinada en la que, por casualidad, las estaciones de tren y autobús están
- * unidas. Implementa una función que calcule la tarifa mínima (matriz de costes
- * mínimos) de viajar entre cualesquiera de las N ciudades disponiendo del grafo
- * de costes en autobús, del grafo de costes en tren, y de la ciudad que tiene
- * las estaciones unidas.
+ * @done Practica 7: Ejercicio 6
  */
-
 template <typename C>
 matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
                                    vertice<C> estacion) {
@@ -156,6 +148,9 @@ matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
   return F_min;
 }
 
+/**
+ * @done Practica 7: Ejercicio 7
+ */
 template <typename C>
 std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
     const GrafoP<C>& tren, const GrafoP<C>& bus, vertice<C> origen,
@@ -180,37 +175,59 @@ std::tuple<C, tCamino<C>> TransporteSinTaxiDosEstaciones(
 }
 
 /**
- *
- * @todo Practica 7: Ejercicio 8
- * @body "UN SOLO TRANSBORDO, POR FAVOR". Este es el título que reza en tu
- * flamante compañía de viajes. Tu publicidad explica, por supuesto, que ofreces
- * viajes combinados de TREN y/o AUTOBÚS (es decir, viajes en tren, en autobús,
- * o usando ambos), entre N ciudades del país, que ofreces un servicio
- * inmejorable, precios muy competitivos, y que garantizas ante notario algo que
- * no ofrece ninguno de tus competidores: que en todos tus viajes COMO MÁXIMO se
- * hará un solo transbordo (cambio de medio de transporte). Bien, hoy es 1 de
- * Julio y comienza la temporada de viajes. ¡Qué suerte! Acaba de aparecer un
- * cliente en tu oficina. Te explica que quiere viajar entre dos ciudades,
- * Origen y Destino, y quiere saber cuánto le costará. Para responder a esa
- * pregunta dispones de dos grafos de costes directos (matriz de costes) de
- * viajar entre las N ciudades del país, un grafo con los costes de viajar en
- * tren y otro en autobús. Implementa un subprograma que calcule la tarifa
- * mínima en estas condiciones. Mucha suerte en el negocio, que la competencia
- * es dura.
+ * @done Practica 7: Ejercicio 8
  */
+template <typename C>
+C UnSoloTransbordo(const GrafoP<C>& tren, const GrafoP<C>& bus,
+                   vertice<C> origen, vertice<C> destino) {
+  vector<vertice<C>> P;
+  vector<C> DTren{Dijkstra(tren, origen, P)};
+  vector<C> DInvTren{DijkstraInv(tren, destino, P)};
+  vector<C> DBus{Dijkstra(bus, origen, P)};
+  vector<C> DInvBus{DijkstraInv(bus, destino, P)};
+  const size_t n = tren.numVert();
+  vector<C> min_elem(2 * n);
+  for (size_t i = 0; i < n; ++i) {
+    min_elem[i] = DTren[i] + DInvBus[i];
+    min_elem[n + i] = DBus[i] + DInvTren[i];
+  }
+  return *std::min_element(min_elem.begin(), min_elem.end());
+}
 
 /**
- *
- * @todo Practica 7: Ejercicio 9
- * @body Se dispone de dos grafos que representan la matriz de costes para
- * viajes en un determinado país, pero por diferentes medios de transporte (tren
- * y autobús, por ejemplo). Por supuesto ambos grafos tendrán el mismo número de
- * nodos, N. Dados ambos grafos, una ciudad de origen, una ciudad de destino y
- * el coste del taxi para cambiar de una estación a otra dentro de cualquier
- * ciudad (se supone constante e igual para todas las ciudades), implementa un
- * subprograma que calcule el camino y el coste mínimo para ir de la ciudad
- * origen a la ciudad destino.
+ * @done Practica 7: Ejercicio 9
  */
+template <typename C>
+std::tuple<C, tCamino<C>> TransporteConTaxi(const GrafoP<C>& bus,
+                                            const GrafoP<C>& tren,
+                                            vertice<C> origen,
+                                            vertice<C> destino) {
+  const size_t n = bus.numVert();
+  GrafoP<C> BG(2 * n);
+  for (vertice<C> v = 0; v < n; ++v) {
+    for (vertice<C> w = 0; w < n; ++w) {
+      BG[v][w] = tren[v][w];
+      BG[v + n][w + n] = bus[v][w];
+      if (v == w) {
+        BG[v][w + n] = BG[v + n][w] = 1;
+      }
+    }
+  }
+  vector<vertice<C>> P;
+  vector<C> D{Dijkstra(BG, origen, P)};
+  tCamino<C> path;
+  if (D[destino] < D[destino + n]) {
+    path = camino<C>(origen, destino, P);
+  } else {
+    path = camino<C>(origen, destino + n, P);
+  }
+  for (auto it = path.primera(); it != path.fin(); it = path.siguiente(it)) {
+    if (path.elemento(it) > n - 1) {
+      path.elemento(it) -= n;
+    }
+  }
+  return {std::min(D[destino], D[destino + n]), path};
+}
 
 /**
  *
