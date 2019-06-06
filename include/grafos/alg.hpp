@@ -21,6 +21,79 @@ template <typename T>
 using arista = typename GrafoP<T>::arista;
 
 template <typename T>
+GrafoP<T> BigGrafo(const vector<GrafoP<T>>& graphs,
+                   const vector<vector<T>>& costes) {
+  const size_t m{graphs.size()}, n{graphs[0].numVert()};
+  GrafoP<T> BG(m * n);
+  vertice<T> v, w, bgv, bgw;
+  for (size_t i = 0, g = 0, d = 0; i < m; ++i, g += (m - i), d = 0) {
+    for (v = 0; v < n; ++v) {
+      bgv = v + n * i;
+      for (w = v; w < n; ++w) {
+        bgw = w + n * i;
+        BG[bgv][bgw] = BG[bgw][bgv] = graphs[i][v][w];
+        if (v == w && i < m - 1) {
+          for (size_t j = n * (i + 1), k = g; j < m * n; j += n, ++k) {
+            BG[bgv][j + w] = BG[j + w][bgv] = costes[k][d];
+          }
+          ++d;
+        }
+      }
+    }
+  }
+  return BG;
+}
+
+template <typename T>
+GrafoP<T> BigGrafo(const vector<GrafoP<T>>& graphs,
+                   const vector<vector<T>>& costes_sup,
+                   const vector<vector<T>>& costes_inf) {
+  const size_t m{graphs.size()}, n{graphs[0].numVert()};
+  GrafoP<T> BG(m * n);
+  vertice<T> v, w, bgv, bgw;
+  for (size_t i = 0, g = 0, d = 0; i < m; ++i, g += (m - i), d = 0) {
+    for (v = 0; v < n; ++v) {
+      bgv = v + n * i;
+      for (w = v; w < n; ++w) {
+        bgw = w + n * i;
+        BG[bgv][bgw] = BG[bgw][bgv] = graphs[i][v][w];
+        if (v == w && i < m - 1) {
+          for (size_t j = (n * (i + 1)) + w, k = g; j < m * n; j += n, ++k) {
+            BG[bgv][j] = costes_sup[k][d];
+            BG[j][bgv] = costes_inf[k][d];
+          }
+          ++d;
+        }
+      }
+    }
+  }
+  return BG;
+}
+
+template <typename T>
+GrafoP<T> BigGrafo(const vector<GrafoP<T>>& graphs, T coste) {
+  const size_t m{graphs.size()}, n{graphs[0].numVert()};
+  const size_t mn{m * n};
+  GrafoP<T> BG(mn);
+  vertice<T> v, w, bgv, bgw;
+  for (size_t i = 0; i < m; ++i) {
+    for (v = 0; v < n; ++v) {
+      bgv = v + n * i;
+      for (w = v; w < n; ++w) {
+        bgw = w + n * i;
+        BG[bgw][bgv] = BG[bgv][bgw] = graphs[i][v][w];
+        if (v == w && i < m - 1) {
+          for (size_t j = (n * (i + 1)) + w; j < mn; j += n) {
+            BG[bgv][j] = BG[j][bgv] = coste;
+          }
+        }
+      }
+    }
+  }
+  return BG;
+}
+
+template <typename T>
 /**
  * Suma de costes. Devuelve GrafoP<tCoste>::INFINITO si alguno de los
  * dos parámetros vale GrafoP<tCoste>::INFINITO.

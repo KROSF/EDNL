@@ -5,6 +5,7 @@
 
 using namespace grafos::pmc;
 using alg::arista;
+using alg::BigGrafo;
 using grafos::Lista;
 using std::vector;
 using ::testing::ElementsAre;

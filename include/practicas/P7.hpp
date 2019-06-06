@@ -9,6 +9,7 @@ using grafos::Lista;
 using grafos::matriz;
 using grafos::pmc::GrafoP;
 using grafos::pmc::alg::arista;
+using grafos::pmc::alg::BigGrafo;
 using grafos::pmc::alg::camino;
 using grafos::pmc::alg::caminoInv;
 using grafos::pmc::alg::Dijkstra;
@@ -203,16 +204,7 @@ std::tuple<C, tCamino<C>> TransporteConTaxi(const GrafoP<C>& bus,
                                             vertice<C> origen,
                                             vertice<C> destino) {
   const size_t n = bus.numVert();
-  GrafoP<C> BG(2 * n);
-  for (vertice<C> v = 0; v < n; ++v) {
-    for (vertice<C> w = 0; w < n; ++w) {
-      BG[v][w] = tren[v][w];
-      BG[v + n][w + n] = bus[v][w];
-      if (v == w) {
-        BG[v][w + n] = BG[v + n][w] = 1;
-      }
-    }
-  }
+  GrafoP<C> BG{BigGrafo<C>({tren, bus}, 1)};
   vector<vertice<C>> P;
   vector<C> D{Dijkstra(BG, origen, P)};
   tCamino<C> path;
@@ -247,7 +239,15 @@ std::tuple<C, tCamino<C>> TransporteConTaxi(const GrafoP<C>& bus,
  * iguales para todas las ciudades, implementa un subprograma que calcule el
  * camino y el coste mínimo para ir de la ciudad origen a la ciudad destino.
  */
-
+template <typename C>
+void TransporteConTaxi2(const GrafoP<C>& tren, const GrafoP<C>& bus,
+                        const GrafoP<C>& avion, vertice<C> origen,
+                        vertice<C> destino, C t_b, C a_t_b) {
+  const size_t n = tren.numVert();
+  vector<C> v_t_b(n, t_b);
+  vector<C> v_a_t_b(n, a_t_b);
+  GrafoP<C> BG{BigGrafo<C>({tren, bus, avion}, {v_t_b, v_a_t_b, v_a_t_b})};
+}
 /**
  *
  * @todo Practica 7: Ejercicio 11
