@@ -55,13 +55,13 @@ std::tuple<T, T> pseudoCentroDiametro(const GrafoP<T>& G) {
 
 template <typename tCoste>
 size_t PseudoCentro(const GrafoP<tCoste>& G) {
-  auto [nodo, _] = pseudoCentroDiametro(G);
+  auto [nodo, std::ignore] = pseudoCentroDiametro(G);
   return nodo;
 }
 
 template <typename tCoste>
 size_t Diametro(const GrafoP<tCoste>& G) {
-  auto [_, diam] = pseudoCentroDiametro(G);
+  auto [std::ignore, diam] = pseudoCentroDiametro(G);
   return diam;
 }
 
