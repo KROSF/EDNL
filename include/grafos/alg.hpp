@@ -1,6 +1,8 @@
 #ifndef GRAFOS_ALG_HPP
 #define GRAFOS_ALG_HPP
+#include <algorithm>
 #include <cassert>
+#include <tuple>
 #include "grafos/apo.hpp"
 #include "grafos/cola.hpp"
 #include "grafos/matriz.hpp"
@@ -19,6 +21,18 @@ using tCamino = typename GrafoP<T>::tCamino;
 
 template <typename T>
 using arista = typename GrafoP<T>::arista;
+
+template <typename C>
+std::tuple<size_t, C> min_with_index(const vector<C>& v) {
+  auto index = std::min_element(v.begin(), v.end());
+  return {std::distance(v.begin(), index), *index};
+}
+
+template <typename C>
+std::tuple<size_t, C> max_with_index(const vector<C>& v) {
+  auto index = std::max_element(v.begin(), v.end());
+  return {std::distance(v.begin(), index), *index};
+}
 
 template <typename T>
 GrafoP<T> BigGrafo(const vector<GrafoP<T>>& graphs,

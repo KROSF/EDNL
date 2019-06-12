@@ -1,8 +1,6 @@
 #ifndef PRACTICAS_P7_HPP
 #define PRACTICAS_P7_HPP
 
-#include <algorithm>
-#include <tuple>
 #include "grafos/alg.hpp"
 
 using grafos::Lista;
@@ -14,6 +12,7 @@ using grafos::pmc::alg::camino;
 using grafos::pmc::alg::caminoInv;
 using grafos::pmc::alg::Dijkstra;
 using grafos::pmc::alg::FloydMax;
+using grafos::pmc::alg::min_with_index;
 using grafos::pmc::alg::tCamino;
 using grafos::pmc::alg::vertice;
 using std::size_t;
@@ -70,25 +69,28 @@ std::tuple<tCoste, tCamino<tCoste>> Laberinto(
  */
 template <typename tCoste>
 std::tuple<vector<tCoste>, tCoste> Distribucion(
-    vertice<tCoste> centro, size_t cantidad, const GrafoP<tCoste>& G,
-    const vector<tCoste>& capacidad, const vector<tCoste>& subvencion) {
-  const size_t n{G.numVert()};
-  vector<tCoste> res(n, 0);
-  vector<double> subvenciones(subvencion);
-  tCoste coste{0};
+    const GrafoP<tCoste>& ciudades, const vertice<tCoste>& centro_prod,
+    tCoste cantidad, const vector<tCoste>& capacidad,
+    const vector<tCoste>& subv) {
+  size_t n = subv.size();
+  vector<tCoste> cants_ciud(n, 0);
+  vector<double> subvenciones(subv.begin(), subv.end());
+  tCoste coste = 0;
+
   vector<vertice<tCoste>> P;
-  vector<tCoste> D{Dijkstra(G, centro, P)};
+  vector<tCoste> D = Dijkstra(ciudades, centro_prod, P);
+
   for (vertice<tCoste> i = 0; i < n && cantidad > 0; ++i) {
-    auto it = std::max_element(subvenciones.begin(), subvenciones.end());
-    auto index = std::distance(subvenciones.begin(), it);
-    if (capacidad[index] <= cantidad) {
-      res[index] = capacidad[index];
-      coste += D[index] - static_cast<tCoste>(((*it) * D[index]) / 100);
-      cantidad -= capacidad[index];
-      subvenciones[index] = .0;
+    auto it = max_element(subvenciones.begin(), subvenciones.end());
+    int ind = distance(subvenciones.begin(), it);
+    if (capacidad[ind] <= cantidad) {
+      cants_ciud[ind] = capacidad[ind];
+      coste += D[ind] - (tCoste)((*it) * D[ind] / 100);
+      cantidad -= capacidad[ind];
+      subvenciones[ind] = 0;
     }
   }
-  return {res, coste};
+  return {cants_ciud, coste};
 }
 
 /**
@@ -232,13 +234,24 @@ std::tuple<C, tCamino<C>> TransporteConTaxi(const GrafoP<C>& bus,
  * @done Practica 7: Ejercicio 10
  */
 template <typename C>
-void TransporteConTaxi2(const GrafoP<C>& tren, const GrafoP<C>& bus,
-                        const GrafoP<C>& avion, vertice<C> origen,
-                        vertice<C> destino, C t_b, C a_t_b) {
+std::tuple<C, tCamino<C>> TransporteConTaxi2(
+    const GrafoP<C>& tren, const GrafoP<C>& bus, const GrafoP<C>& avion,
+    vertice<C> origen, vertice<C> destino, C t_b, C a_t_b) {
   const size_t n = tren.numVert();
   vector<C> v_t_b(n, t_b);
   vector<C> v_a_t_b(n, a_t_b);
   GrafoP<C> BG{BigGrafo<C>({tren, bus, avion}, {v_t_b, v_a_t_b, v_a_t_b})};
+  vector<vertice<C>> P;
+  vector<C> D{Dijkstra(BG, origen, P)};
+  tCamino<C> path;
+  auto [index, value] =
+      min_with_index({D[destino], D[destino + n], D[destino + 2 * n]});
+  path = camino<C>(origen, destino + index * n, P);
+  for (auto it = path.primera(); it != path.fin(); it = path.siguiente(it)) {
+    if (path.elemento(it) > 2 * n - 1) path.elemento(it) -= 2 * n;
+    if (path.elemento(it) > n - 1) path.elemento(it) -= n;
+  }
+  return {value, path};
 }
 /**
  *

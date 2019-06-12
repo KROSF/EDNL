@@ -108,10 +108,10 @@ TEST_F(Practica_7, ejercicio_2_laberinto) {
 
 TEST_F(Practica_7, ejercico_3_distribucion) {
   GrafoP<unsigned> G("files/grafos/distribucion.txt");
-  auto [dist, coste] = Distribucion<unsigned>(1, 80, G, {20, 0, 10, 50, 40, 10},
+  auto [dist, coste] = Distribucion<unsigned>(G, 1, 80, {20, 0, 10, 50, 40, 10},
                                               {30, 0, 25, 15, 10, 20});
-  ASSERT_EQ(10, coste);
-  ASSERT_THAT(dist, ElementsAreArray({2, 3}));
+  ASSERT_EQ(23u, coste);
+  ASSERT_THAT(dist, ElementsAreArray<unsigned>({20, 0, 10, 0, 0, 10}));
 }
 
 TEST_F(Practica_7, ejercicio_4_cementos_zuelandia) {
