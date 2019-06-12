@@ -65,23 +65,30 @@ std::tuple<tCoste, tCamino<tCoste>> Laberinto(
 
 /**
  *
- * @todo Practica 7: Ejercicio 3
+ * @done Practica 7: Ejercicio 3
  * @body Finalizar la funcion de distribucion.
  */
 template <typename tCoste>
-void Distribucion(vertice<tCoste> centro, size_t cantidad,
-                  const GrafoP<tCoste>& G, const vector<tCoste>& capacidad,
-                  const vector<tCoste>& subvencion) {
+std::tuple<vector<tCoste>, tCoste> Distribucion(
+    vertice<tCoste> centro, size_t cantidad, const GrafoP<tCoste>& G,
+    const vector<tCoste>& capacidad, const vector<tCoste>& subvencion) {
   const size_t n{G.numVert()};
-  matriz<tCoste> A(n);
-  for (vertice<tCoste> v = 0; v < n; ++v) {
-    A[v] = G[v];
-    for (vertice<tCoste> w = 0; w < n; ++w) {
-      if (A[v][w] != GrafoP<tCoste>::INFINITO) {
-        A[v][w] *= cantidad;
-      }
+  vector<tCoste> res(n, 0);
+  vector<double> subvenciones(subvencion);
+  tCoste coste{0};
+  vector<vertice<tCoste>> P;
+  vector<tCoste> D{Dijkstra(G, centro, P)};
+  for (vertice<tCoste> i = 0; i < n && cantidad > 0; ++i) {
+    auto it = std::max_element(subvenciones.begin(), subvenciones.end());
+    auto index = std::distance(subvenciones.begin(), it);
+    if (capacidad[index] <= cantidad) {
+      res[index] = capacidad[index];
+      coste += D[index] - static_cast<tCoste>(((*it) * D[index]) / 100);
+      cantidad -= capacidad[index];
+      subvenciones[index] = .0;
     }
   }
+  return {res, coste};
 }
 
 /**
