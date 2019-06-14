@@ -208,3 +208,17 @@ TEST_F(Practica_7, ejercicio_9_transporte_con_taxi2) {
   ASSERT_EQ(coste, 22);
   ASSERT_THAT(got, ElementsAreArray({0, 0, 3, 3, 7}));
 }
+
+TEST_F(Practica_7, ejercicio_10_transporte_con_2_taxi) {
+  GrafoP<int> A("files/grafos/avion.txt");
+  GrafoP<int> B("files/grafos/bus.txt");
+  GrafoP<int> T("files/grafos/tren.txt");
+  vector<int> got;
+  auto [coste, camino] = TransporteConTaxi2(T, B, A, 4, 3, 2, 3);
+  for (auto it = camino.primera(); it != camino.fin();
+       it = camino.siguiente(it)) {
+    got.push_back(camino.elemento(it));
+  }
+  ASSERT_EQ(coste, 47);
+  ASSERT_THAT(got, ElementsAreArray({4, 4, 7, 7, 3}));
+}

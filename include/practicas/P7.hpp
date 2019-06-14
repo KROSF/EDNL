@@ -245,7 +245,7 @@ std::tuple<C, tCamino<C>> TransporteConTaxi2(
   vector<C> D{Dijkstra(BG, origen, P)};
   tCamino<C> path;
   auto [index, value] =
-      min_with_index({D[destino], D[destino + n], D[destino + 2 * n]});
+      min_with_index<C>({D[destino], D[destino + n], D[destino + 2 * n]});
   path = camino<C>(origen, destino + index * n, P);
   for (auto it = path.primera(); it != path.fin(); it = path.siguiente(it)) {
     if (path.elemento(it) > 2 * n - 1) path.elemento(it) -= 2 * n;
