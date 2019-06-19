@@ -152,7 +152,7 @@ matriz<C> AgenciaTransporteSinTaxi(const GrafoP<C>& bus, const GrafoP<C>& tren,
     for (vertice<C> w = 0; w < dim; ++w) {
       F_min[v][w] = std::min({F_Bus[v][w], F_Tren[v][w],
                               F_Bus[v][estacion] + F_Tren[estacion][w],
-                              F_Tren[v][estacion] + F_Tren[estacion][w]});
+                              F_Tren[v][estacion] + F_Bus[estacion][w]});
     }
   }
   return F_min;
