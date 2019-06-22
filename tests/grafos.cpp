@@ -2,11 +2,13 @@
 #include <gtest/gtest.h>
 #include "practicas/P6.hpp"
 #include "practicas/P7.hpp"
+#include "practicas/P8.hpp"
 
 using namespace grafos::pmc;
 using alg::arista;
 using alg::BigGrafo;
 using grafos::Lista;
+using grafos::ma::Grafo;
 using std::vector;
 using ::testing::ElementsAre;
 using ::testing::ElementsAreArray;
@@ -221,4 +223,12 @@ TEST_F(Practica_7, ejercicio_10_transporte_con_2_taxi) {
   }
   ASSERT_EQ(coste, 47);
   ASSERT_THAT(got, ElementsAreArray({4, 4, 7, 7, 3}));
+}
+
+class Practica_8 : public ::testing::Test {};
+
+TEST_F(Practica_8, Practica_8_tombuctu) {
+  Grafo MA("files/grafos/tombuctu.txt");
+  vector<CC> ciudades{{2, 4}, {-1, 5}, {2, 3}, {-8, 3}, {0, 1}, {4, -4}};
+  auto[islas, floyd] = Tombuctu(ciudades, MA);
 }

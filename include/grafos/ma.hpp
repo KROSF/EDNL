@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <ostream>
 #include <string>
+#include <sstream>
 #include <string_view>
 #include <vector>
 using std::vector;
