@@ -46,12 +46,12 @@ GrafoP<T> BigGrafo2(const vector<GrafoP<T>>& graphs,
 
 int main(void) {
   GrafoP<int> B("files/grafos/bus.txt");
-  GrafoP<int> T("files/grafos/tren.txt");
-  GrafoP<int> got = BigGrafo<int>({B, T, B, T}, {{1, 2, 3, 4, 5, 6, 7, 8},
-                                                 {9, 8, 7, 6, 5, 4, 3, 2},
-                                                 {1, 2, 3, 2, 2, 2, 4, 1},
-                                                 {1, 2, 3, 1, 2, 3, 1, 2},
-                                                 {9, 8, 7, 6, 5, 4, 3, 2},
-                                                 {1, 2, 3, 2, 2, 2, 4, 1}});
-  std::cout << got << std::endl;
+  B[0][2] = B[2][0] = -5;
+  B[2][6] = B[6][2] = -8;
+  matriz<vertice<int>> P;
+  vector<vertice<int>> PD;
+  matriz<int> F{Floyd(B, P)};
+  vector<int> D{Dijkstra(B, 0, PD)};
+  std::cout << F << std::endl;
+  std::cout << D << std::endl;
 }

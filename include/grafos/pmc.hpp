@@ -29,6 +29,7 @@ class GrafoP {
     bool operator==(const arista& a) const {
       return orig == a.orig && dest == a.dest && coste == a.coste;
     }
+    bool operator<(const arista& a) const { return coste < a.coste; }
   };
   explicit GrafoP(std::size_t n) : costes(n, vector<tCoste>(n, INFINITO)) {}
   explicit GrafoP(std::string_view path);
