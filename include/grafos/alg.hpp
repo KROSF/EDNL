@@ -385,6 +385,27 @@ GrafoP<tCoste> Kruskall(const GrafoP<tCoste>& G) {
   return g;
 }
 
+template <typename tCoste>
+GrafoP<tCoste> KruskallMax(const GrafoP<tCoste>& G) {
+  GrafoP<tCoste> gg(G);
+  for (size_t i = 0; i < gg.numVert(); ++i) {
+    for (size_t j = 0; j < gg.numVert(); ++j) {
+      if (gg[i][j] != GrafoP<tCoste>::INFINITO) {
+        gg[i][j] *= -1;
+      }
+    }
+  }
+  gg = Kruskall(gg);
+  for (size_t i = 0; i < gg.numVert(); ++i) {
+    for (size_t j = 0; j < gg.numVert(); ++j) {
+      if (gg[i][j] != GrafoP<tCoste>::INFINITO) {
+        gg[i][j] *= -1;
+      }
+    }
+  }
+  return gg;
+}
+
 }  // namespace pmc::alg
 namespace ma::alg {
 using vertice = Grafo::vertice;
